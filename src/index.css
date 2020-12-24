@@ -11,3 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.addItem {
+  height: 200px;
+  width: 50%;
+  background-color: powderblue;
+  padding: 30px;
+}

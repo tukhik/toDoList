@@ -1,4 +1,5 @@
 import react, {Component} from 'react';
+import './index.css';
 
 export default class Input extends Component {
 	state = {
@@ -26,7 +27,7 @@ export default class Input extends Component {
 			type = "text" 
 			onChange = {this.handleChange}/>
 			<button onClick = {this.handleClick}> Click me</button>
-			<ul id="addItem">
+			<ul>
 			 {this.state.arr.map(item => (
             <li key={item}>{item}</li>
           ))}
