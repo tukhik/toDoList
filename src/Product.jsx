@@ -14,16 +14,17 @@ export class Product extends Component {
      handleClickPrice = ()=>{
 
         this.setState((state)=>{
-        if(state.value.indexOf('$')>=0){
+        let price = parseFloat(state.value)
+        console.log(state.value)
+        if(state.value.includes('$')){
          return {
-                value: "500AMD",
-
+                value: price * 500 + "AMD",
             };
         }
 
         else {
          return {
-                value: "1$",
+                value: price / 500  + "$",
             };
         }  
         }, 
