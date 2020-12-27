@@ -1,6 +1,7 @@
 import './App.css';
 //import {Product} from './Product.jsx'
 import Input from './Input';
+import './index.css';
 
 function App() {
   return (

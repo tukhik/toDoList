@@ -11,9 +11,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.task__remove-icon {
+  display: none;
+  margin: 0px 20px;
+}
 .addItem {
   height: 200px;
-  width: 50%;
   background-color: powderblue;
-  padding: 30px;
+}
+.liClass:hover .task__remove-icon{
+  display: block;
+  background-color: red;
 }
