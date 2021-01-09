@@ -10,7 +10,6 @@ function App() {
        <Product defaultValue= {"5$"}  description = " Fresh bananas from Ecuador" name=" banabas"/>
     </div>*/
     <div className="App">
-    <div>todo list</div>
       <ToDo />
       </div>  
   );
