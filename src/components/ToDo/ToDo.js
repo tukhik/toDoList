@@ -8,7 +8,7 @@ class ToDo extends Component {
 	state = {
 		inputValue: '',
 		tasks: [],
-		selectedTasks: []
+		selectedTasks: new Set()
 		
 	};
 	handleChange = (event)=>{
@@ -47,31 +47,37 @@ class ToDo extends Component {
        
     };
 
-
-
-    chekedTasks =(taskID)=>{
-    	let selectedTasks = [...this.state.selectedTasks];
-    	if(selectedTasks.includes(taskID) ){
-    		selectedTasks.splice(taskID, 1) ;
-       	}else {
-    		selectedTasks = [...this.state.selectedTasks, taskID];
-    	}
-    	this.setState({ selectedTasks }); 
-    	console.log("selectedTasks  " + selectedTasks)	
-    	console.log("taskID  " + taskID)		
+    toggleTask=(taskID)=>{
+        const selectedTasks = new Set(this.state.selectedTasks);
+        if(selectedTasks.has(taskID)){
+            selectedTasks.delete(taskID);
+        }else {
+            selectedTasks.add(taskID)
+        }
+        this.setState({selectedTasks})
     }
 
+removeSelected = ()=>{
+    const {selectedTasks, tasks} = this.state;
+    const newTasks = tasks.filter((task)=>{
+        if(selectedTasks.has(task._id)){
+            return false
+        } else{
+            return true
+        }
+    })
+    this.setState({
+        tasks: newTasks,
+        selectedTasks: new Set()
+    })
+}
 
-    deleteTasks=(selectedTasks)=>{
-    	const newTask = this.state.tasks.map((task)=>{
-    		console.log("task._id " + task._id)
-    		return task._id
-    	})
-	this.setState({tasks: newTask});
-     	console.log("newTask " + newTask) 
-    };
+hundleKeyDown = (event)=>{
+    if(event.key ==="Enter"){
+        this.addTask()
+    }
+}
 
-     	
      	 
 
 
@@ -79,7 +85,7 @@ class ToDo extends Component {
 
 
 	render() {
-        const { tasks, inputValue } = this.state;
+        const { tasks, inputValue, selectedTasks } = this.state;
 
         const taskComponents = tasks.map((task) => {
 
@@ -93,9 +99,7 @@ class ToDo extends Component {
                     xl={2}
                 >
                     <Card className={styles.task}>
-                   <Form.Group controlId="formBasicCheckbox">
-				    <Form.Check type="checkbox" label="Check me out"  onClick={() => this.chekedTasks(task._id)}/>
-				  </Form.Group>
+                   <input type ="checkbox" onChange={()=>this.toggleTask(task._id)} />
 					<Card.Body>
                             <Card.Title>{task.title}</Card.Title>
                             <Card.Text>
@@ -104,6 +108,7 @@ class ToDo extends Component {
                             <Button
                                 variant="danger"
                                 onClick={() => this.deleteTask(task._id)}
+                                disabled = {!!selectedTasks.size}
                             >
                                 Delete
                   </Button>
@@ -125,26 +130,31 @@ class ToDo extends Component {
                             <InputGroup className="mb-3">
                                 <FormControl
                                     placeholder="Input your task"
+                                    onKeyDown = {this.hundleKeyDown}
                                     value={inputValue}
                                     onChange={this.handleChange}
+                                    disabled = {!!selectedTasks.size}
                                 />
                                 <InputGroup.Append>
                                     <Button
                                         variant="outline-primary"
                                         onClick={this.addTask}
+                                        disabled = {!!selectedTasks.size}
                                     >
                                         Add
-                                    </Button>
-                                    <Button
-                                        variant="outline-primary"
-                                        onClick={this.deleteTasks}
-                                    >
-                                        Delete cheked Items
                                     </Button>
                                 </InputGroup.Append>
                             </InputGroup>
                         </Col>
                     </Row>
+                    <Button
+                                variant="danger"
+                                onClick = {this.removeSelected}
+                                disabled = {!selectedTasks.size}
+                                
+                            >
+                                Delete Select
+                  </Button>
                     <Row>
                         {taskComponents}
                     </Row>
