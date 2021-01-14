@@ -1,16 +1,20 @@
 import React, {Component} from 'react';
 import styles from './todo.module.css';
 import idGenerator from '../../helpers/idGenerator';
-import { Container, Row, Col, Form, Card, Button, FormControl, InputGroup } from 'react-bootstrap';
+import Task from '../Task/Task';
+import NewTask from '../Task/NewTask';
+import { Container, Row, Col, Button, FormControl, InputGroup } from 'react-bootstrap';
 
 
 class ToDo extends Component {
 	state = {
-		inputValue: '',
+		inputValue: "",
 		tasks: [],
 		selectedTasks: new Set()
 		
 	};
+
+
 	handleChange = (event)=>{
 		this.setState({
 			inputValue: event.target.value
@@ -78,12 +82,6 @@ hundleKeyDown = (event)=>{
     }
 }
 
-     	 
-
-
-
-
-
 	render() {
         const { tasks, inputValue, selectedTasks } = this.state;
 
@@ -98,25 +96,11 @@ hundleKeyDown = (event)=>{
                     lg={3}
                     xl={2}
                 >
-                    <Card className={styles.task}>
-                   <input type ="checkbox" onChange={()=>this.toggleTask(task._id)} />
-					<Card.Body>
-                            <Card.Title>{task.title}</Card.Title>
-                            <Card.Text>
-                                Some quick example text to build on the card title and
-                  </Card.Text>
-                            <Button
-                                variant="danger"
-                                onClick={() => this.deleteTask(task._id)}
-                                disabled = {!!selectedTasks.size}
-                            >
-                                Delete
-                  </Button>
-                        </Card.Body>
-                    </Card>
-
-
-
+                   <Task data={task}
+                    onToggle = {this.toggleTask}
+                    disabled = {!!selectedTasks.size}
+                    onDelete = {this.deleteTask}
+                    />
                 </Col>
             )
         });
@@ -127,34 +111,22 @@ hundleKeyDown = (event)=>{
                 <Container>
                     <Row  className="justify-content-center">
                         <Col xs={10}>
-                            <InputGroup className="mb-3">
-                                <FormControl
-                                    placeholder="Input your task"
-                                    onKeyDown = {this.hundleKeyDown}
-                                    value={inputValue}
-                                    onChange={this.handleChange}
-                                    disabled = {!!selectedTasks.size}
-                                />
-                                <InputGroup.Append>
-                                    <Button
-                                        variant="outline-primary"
-                                        onClick={this.addTask}
-                                        disabled = {!!selectedTasks.size}
-                                    >
-                                        Add
-                                    </Button>
-                                </InputGroup.Append>
-                            </InputGroup>
+                          
+                          <NewTask 
+                          onKeyDown = {this.hundleKeyDown} 
+                          newInput = {this.inputValue}
+                          disabled = {selectedTasks.size}
+                        addNewTask = {this.addTask}
+                        />
                         </Col>
                     </Row>
                     <Button
-                                variant="danger"
-                                onClick = {this.removeSelected}
-                                disabled = {!selectedTasks.size}
-                                
-                            >
-                                Delete Select
-                  </Button>
+                        variant="danger"
+                        onClick = {this.removeSelected}
+                        disabled = {!!selectedTasks.size}
+                        >
+                        Delete Select
+                    </Button>
                     <Row>
                         {taskComponents}
                     </Row>
