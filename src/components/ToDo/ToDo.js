@@ -1,89 +1,79 @@
-import React, {Component} from 'react';
-import styles from './todo.module.css';
-import idGenerator from '../../helpers/idGenerator';
+import React, { Component } from 'react';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import Task from '../Task/Task';
-import NewTask from '../Task/NewTask';
-import { Container, Row, Col, Button, FormControl, InputGroup } from 'react-bootstrap';
-
+import NewTask from '../NewTask/NewTask';
+import Confirm from '../Confirm.js';
 
 class ToDo extends Component {
-	state = {
-		inputValue: "",
-		tasks: [],
-		selectedTasks: new Set()
-		
-	};
+    state = {
+        tasks: [],
+        selectedTasks: new Set(),
+        showConfirm: false
+    };
 
 
-	handleChange = (event)=>{
-		this.setState({
-			inputValue: event.target.value
-		});
-	};
-	
- 	
-	addTask = () => {
-        const inputValue = this.state.inputValue.trim();
 
-        if (!inputValue) {
-            return;
+    addTask = (newTask) => {
+        const tasks = [...this.state.tasks, newTask];
+
+        this.setState({
+            tasks
+        });
+    };
+
+    deleteTask = (taskId) => {
+        const newTasks = this.state.tasks.filter((task) => taskId !== task._id);
+
+        this.setState({
+            tasks: newTasks
+        });
+    };
+
+    toggleTask = (taskId) => {
+        const selectedTasks = new Set(this.state.selectedTasks);
+        if (selectedTasks.has(taskId)) {
+            selectedTasks.delete(taskId);
+        }
+        else {
+            selectedTasks.add(taskId);
         }
 
-        const newTask = {
-            _id: idGenerator(),
-            title: inputValue
-        };
-
-       
-
-        const tasks = [...this.state.tasks, newTask];
         this.setState({
-            tasks,
-            inputValue: ''
+            selectedTasks
+        });
+    };
+
+
+    removeSelected = () => {
+        const { selectedTasks, tasks } = this.state;
+
+        const newTasks = tasks.filter((task) => {
+            if (selectedTasks.has(task._id)) {
+                return false;
+            }
+            return true;
         });
 
+        this.setState({
+            tasks: newTasks,
+            selectedTasks: new Set(),
+            showConfirm: false
+        });
 
     };
 
- 	deleteTask=(taskID)=>{
- 		const newTasks = this.state.tasks.filter((tasks)=> taskID!== tasks._id)
-        this.setState({tasks: newTasks});
-       
+    toggleConfirm = ()=>{
+        this.setState({
+            showConfirm: !this.state.showConfirm
+        });
     };
 
-    toggleTask=(taskID)=>{
-        const selectedTasks = new Set(this.state.selectedTasks);
-        if(selectedTasks.has(taskID)){
-            selectedTasks.delete(taskID);
-        }else {
-            selectedTasks.add(taskID)
-        }
-        this.setState({selectedTasks})
-    }
 
-removeSelected = ()=>{
-    const {selectedTasks, tasks} = this.state;
-    const newTasks = tasks.filter((task)=>{
-        if(selectedTasks.has(task._id)){
-            return false
-        } else{
-            return true
-        }
-    })
-    this.setState({
-        tasks: newTasks,
-        selectedTasks: new Set()
-    })
-}
 
-hundleKeyDown = (event)=>{
-    if(event.key ==="Enter"){
-        this.addTask()
-    }
-}
 
-	render() {
-        const { tasks, inputValue, selectedTasks } = this.state;
+    render() {
+
+        const { tasks, selectedTasks, showConfirm } = this.state;
 
         const taskComponents = tasks.map((task) => {
 
@@ -96,7 +86,8 @@ hundleKeyDown = (event)=>{
                     lg={3}
                     xl={2}
                 >
-                   <Task data={task}
+                    <Task 
+                    data={task}
                     onToggle = {this.toggleTask}
                     disabled = {!!selectedTasks.size}
                     onDelete = {this.deleteTask}
@@ -109,31 +100,46 @@ hundleKeyDown = (event)=>{
             <div>
                 <h2>ToDo List</h2>
                 <Container>
-                    <Row  className="justify-content-center">
+                    <Row className="justify-content-center">
                         <Col xs={10}>
-                          
-                          <NewTask 
-                          onKeyDown = {this.hundleKeyDown} 
-                          newInput = {this.inputValue}
-                          disabled = {selectedTasks.size}
-                        addNewTask = {this.addTask}
+                        <NewTask 
+                        disabled = {!!selectedTasks.size}
+                        onAdd = {this.addTask}
                         />
                         </Col>
                     </Row>
-                    <Button
-                        variant="danger"
-                        onClick = {this.removeSelected}
-                        disabled = {!!selectedTasks.size}
+
+                    <Row>
+                    <Col>
+                    
+                    </Col>
+                    <Col>
+                        <Button
+                            variant="danger"
+                            onClick={this.toggleConfirm}
+                            disabled={!selectedTasks.size}
                         >
-                        Delete Select
-                    </Button>
+                            Delete selected
+                        </Button>
+                        </Col>
+                    </Row>
+
                     <Row>
                         {taskComponents}
                     </Row>
                 </Container>
+
+               {showConfirm && 
+                <Confirm 
+                onClose ={this.toggleConfirm}
+                onConfirm ={this.removeSelected}
+                count={selectedTasks.size}
+                />
+            } 
             </div>
         );
     }
 }
+
 
 export default ToDo;
