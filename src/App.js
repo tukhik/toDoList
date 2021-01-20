@@ -6,9 +6,6 @@ import ToDo from './components/ToDo/ToDo';
 
 function App() {
   return (
-    /*<div className="App">
-       <Product defaultValue= {"5$"}  description = " Fresh bananas from Ecuador" name=" banabas"/>
-    </div>*/
     <div className="App">
       <ToDo />
       </div>  

@@ -1,85 +1,79 @@
-import React, {Component} from 'react';
-import styles from './todo.module.css';
-import idGenerator from '../../helpers/idGenerator';
-import { Container, Row, Col, Form, Card, Button, FormControl, InputGroup } from 'react-bootstrap';
-
+import React, { Component } from 'react';
+import { Container, Row, Col, Button } from 'react-bootstrap';
+import Task from '../Task/Task';
+import NewTask from '../NewTask/NewTask';
+import Confirm from '../Confirm.js';
 
 class ToDo extends Component {
-	state = {
-		inputValue: '',
-		tasks: [],
-		selectedTasks: []
-		
-	};
-	handleChange = (event)=>{
-		this.setState({
-			inputValue: event.target.value
-		});
-	};
-	
- 	
-	addTask = () => {
-        const inputValue = this.state.inputValue.trim();
+    state = {
+        tasks: [],
+        selectedTasks: new Set(),
+        showConfirm: false
+    };
 
-        if (!inputValue) {
-            return;
+
+
+    addTask = (newTask) => {
+        const tasks = [...this.state.tasks, newTask];
+
+        this.setState({
+            tasks
+        });
+    };
+
+    deleteTask = (taskId) => {
+        const newTasks = this.state.tasks.filter((task) => taskId !== task._id);
+
+        this.setState({
+            tasks: newTasks
+        });
+    };
+
+    toggleTask = (taskId) => {
+        const selectedTasks = new Set(this.state.selectedTasks);
+        if (selectedTasks.has(taskId)) {
+            selectedTasks.delete(taskId);
+        }
+        else {
+            selectedTasks.add(taskId);
         }
 
-        const newTask = {
-            _id: idGenerator(),
-            title: inputValue
-        };
-
-       
-
-        const tasks = [...this.state.tasks, newTask];
         this.setState({
-            tasks,
-            inputValue: ''
+            selectedTasks
+        });
+    };
+
+
+    removeSelected = () => {
+        const { selectedTasks, tasks } = this.state;
+
+        const newTasks = tasks.filter((task) => {
+            if (selectedTasks.has(task._id)) {
+                return false;
+            }
+            return true;
         });
 
+        this.setState({
+            tasks: newTasks,
+            selectedTasks: new Set(),
+            showConfirm: false
+        });
 
     };
 
- 	deleteTask=(taskID)=>{
- 		const newTasks = this.state.tasks.filter((tasks)=> taskID!== tasks._id)
-        this.setState({tasks: newTasks});
-       
+    toggleConfirm = ()=>{
+        this.setState({
+            showConfirm: !this.state.showConfirm
+        });
     };
 
 
 
-    chekedTasks =(taskID)=>{
-    	let selectedTasks = [...this.state.selectedTasks];
-    	if(selectedTasks.includes(taskID) ){
-    		selectedTasks.splice(taskID, 1) ;
-       	}else {
-    		selectedTasks = [...this.state.selectedTasks, taskID];
-    	}
-    	this.setState({ selectedTasks }); 
-    	console.log("selectedTasks  " + selectedTasks)	
-    	console.log("taskID  " + taskID)		
-    }
 
+    render() {
 
-    deleteTasks=(selectedTasks)=>{
-    	const newTask = this.state.tasks.map((task)=>{
-    		console.log("task._id " + task._id)
-    		return task._id
-    	})
-	this.setState({tasks: newTask});
-     	console.log("newTask " + newTask) 
-    };
-
-     	
-     	 
-
-
-
-
-
-	render() {
-        const { tasks, inputValue } = this.state;
+        const { tasks, selectedTasks, showConfirm } = this.state;
 
         const taskComponents = tasks.map((task) => {
 
@@ -92,26 +86,12 @@ class ToDo extends Component {
                     lg={3}
                     xl={2}
                 >
-                    <Card className={styles.task}>
-                   <Form.Group controlId="formBasicCheckbox">
-				    <Form.Check type="checkbox" label="Check me out"  onClick={() => this.chekedTasks(task._id)}/>
-				  </Form.Group>
-					<Card.Body>
-                            <Card.Title>{task.title}</Card.Title>
-                            <Card.Text>
-                                Some quick example text to build on the card title and
-                  </Card.Text>
-                            <Button
-                                variant="danger"
-                                onClick={() => this.deleteTask(task._id)}
-                            >
-                                Delete
-                  </Button>
-                        </Card.Body>
-                    </Card>
-
-
-
+                    <Task 
+                    data={task}
+                    onToggle = {this.toggleTask}
+                    disabled = {!!selectedTasks.size}
+                    onDelete = {this.deleteTask}
+                    />
                 </Col>
             )
         });
@@ -120,38 +100,46 @@ class ToDo extends Component {
             <div>
                 <h2>ToDo List</h2>
                 <Container>
-                    <Row  className="justify-content-center">
+                    <Row className="justify-content-center">
                         <Col xs={10}>
-                            <InputGroup className="mb-3">
-                                <FormControl
-                                    placeholder="Input your task"
-                                    value={inputValue}
-                                    onChange={this.handleChange}
-                                />
-                                <InputGroup.Append>
-                                    <Button
-                                        variant="outline-primary"
-                                        onClick={this.addTask}
-                                    >
-                                        Add
-                                    </Button>
-                                    <Button
-                                        variant="outline-primary"
-                                        onClick={this.deleteTasks}
-                                    >
-                                        Delete cheked Items
-                                    </Button>
-                                </InputGroup.Append>
-                            </InputGroup>
+                        <NewTask 
+                        disabled = {!!selectedTasks.size}
+                        onAdd = {this.addTask}
+                        />
                         </Col>
                     </Row>
+
+                    <Row>
+                    <Col>
+                    
+                    </Col>
+                    <Col>
+                        <Button
+                            variant="danger"
+                            onClick={this.toggleConfirm}
+                            disabled={!selectedTasks.size}
+                        >
+                            Delete selected
+                        </Button>
+                        </Col>
+                    </Row>
+
                     <Row>
                         {taskComponents}
                     </Row>
                 </Container>
+
+               {showConfirm && 
+                <Confirm 
+                onClose ={this.toggleConfirm}
+                onConfirm ={this.removeSelected}
+                count={selectedTasks.size}
+                />
+            } 
             </div>
         );
     }
 }
+
 
 export default ToDo;
