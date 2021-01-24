@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
+// import styles from './todo.module.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import Task from '../Task/Task';
 import NewTask from '../NewTask/NewTask';
 import Confirm from '../Confirm';
+import EditTaskModal from '../EditTaskModal';
 
 class ToDo extends Component {
     state = {
         tasks: [],
         selectedTasks: new Set(),
         showConfirm: false,
-        openNewTaskModal: false
+        openNewTaskModal: false,
+        editTask: null
     };
-
     addTask = (newTask) => {
         const tasks = [...this.state.tasks, newTask];
 
@@ -22,17 +24,6 @@ class ToDo extends Component {
     };
 
     deleteTask = (taskId) => {
-        const newTasks = this.state.tasks.filter((task) => taskId !== task._id);
-
-        this.setState({
-            tasks: newTasks
-        });
-    };
-    onSave = val => {
-    console.log('Edited Value -> ', val)
-    }
-
-    EditTask = (taskId) => {
         const newTasks = this.state.tasks.filter((task) => taskId !== task._id);
 
         this.setState({
@@ -98,10 +89,24 @@ class ToDo extends Component {
         });
     };
 
+    handleEdit = (editTask)=>{
+        this.setState({ editTask });
+    };
+
+    handleSaveTask = (editedTask)=>{
+        const tasks = [...this.state.tasks];
+        const foundIndex = tasks.findIndex((task)=> task._id === editedTask._id);
+        tasks[foundIndex] = editedTask;
+        
+        this.setState({
+            tasks,
+            editTask: null
+        });
+    };
 
     render() {
 
-        const { tasks, selectedTasks, showConfirm, openNewTaskModal } = this.state;
+        const { tasks, selectedTasks, showConfirm, openNewTaskModal, editTask } = this.state;
 
         const taskComponents = tasks.map((task) => {
 
@@ -119,9 +124,8 @@ class ToDo extends Component {
                         onToggle={this.toggleTask}
                         disabled={!!selectedTasks.size}
                         onDelete={this.deleteTask}
-                        onSave={this.onSave}
                         selected={selectedTasks.has(task._id)}
-
+                        onEdit={this.handleEdit}
                     />
                 </Col>
             )
@@ -137,16 +141,19 @@ class ToDo extends Component {
                                 variant="primary"
                                 onClick={this.toggleNewTaskModal}
                             >
-                            Add new Task
-                            </Button>
+                                Add new Task
+                     </Button>
+
                         </Col>
+
                         <Col>
                             <Button
                                 variant="warning"
                                 onClick={this.selectAll}
                             >
                                 Select All
-                            </Button>
+                     </Button>
+
                         </Col>
                         <Col>
                             <Button
@@ -163,13 +170,16 @@ class ToDo extends Component {
                                 disabled={!selectedTasks.size}
                             >
                                 Delete selected
-                            </Button>
+                   </Button>
                         </Col>
+
                     </Row>
+
                     <Row>
                         {taskComponents}
                     </Row>
                 </Container>
+
                 {showConfirm &&
                     <Confirm
                         onClose={this.toggleConfirm}
@@ -180,9 +190,18 @@ class ToDo extends Component {
                 {
                     openNewTaskModal &&
                     <NewTask
+                    className='modal'
                     onClose = {this.toggleNewTaskModal}
                     onAdd={this.addTask}
                 />
+                }
+                {
+                    editTask && 
+                    <EditTaskModal
+                        data = {editTask}
+                        onClose = {()=> this.handleEdit(null)}
+                        onSave = {this.handleSaveTask}
+                     />
                 }
             </div>
         );
