@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 // import styles from './todo.module.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import Task from '../Task/Task';
-import NewTask from '../NewTask/NewTask';
-import Confirm from '../Confirm';
-import EditTaskModal from '../EditTaskModal';
+import Task from '../../Task/Task';
+import NewTask from '../../NewTask/NewTask';
+import Confirm from '../../Confirm';
+import EditTaskModal from '../../EditTaskModal';
 
 class ToDo extends Component {
     state = {
@@ -15,95 +15,102 @@ class ToDo extends Component {
         editTask: null
     };
 
+
     componentDidMount(){
         fetch('http://localhost:3001/task', {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": 'application/json'
             }
         })
-        .then(async(response)=>{
-            const res = await response.json();
+            .then(async (response) => {
+                const res = await response.json();
 
-            if(response.status >= 400 && response.status <600){
-                if(res.error){
-                    throw res.error;
-                }
-                else {
-                    throw new Error('smth went wrong')
+                if(response.status >=400 && response.status < 600){
+                    if(res.error){
+                        throw res.error;
+                    }
+                    else {
+                        throw new Error('Something went wrong!');
+                    }
                 }
 
-            }
-          
-            this.setState({
-            tasks: res
-        });
-        })
-        .catch((error)=>{
-            console.log("catch error = ", error);
-        })
+                this.setState({
+                    tasks: res
+                });
+
+            })
+            .catch((error)=>{
+                console.log('catch error', error);
+            });
+
     }
 
+
     addTask = (newTask) => {
+
         fetch('http://localhost:3001/task', {
             method: 'POST',
             body: JSON.stringify(newTask),
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": 'application/json'
             }
         })
-        .then(async(response)=>{
-            const res = await response.json();
-            if(response.status >= 400 && response.status <600){
-                if(res.error){
-                    throw res.error;
-                }
-                else {
-                    throw new Error('smth went wrong')
-                }
+            .then(async (response) => {
+                const res = await response.json();
 
-            }
-          
-            const tasks = [...this.state.tasks, res];
-            this.setState({
-            tasks,
-            openNewTaskModal: false
-        });
-        })
-        .catch((error)=>{
-            console.log("catch error = ", error);
-        })      
+                if(response.status >=400 && response.status < 600){
+                    if(res.error){
+                        throw res.error;
+                    }
+                    else {
+                        throw new Error('Something went wrong!');
+                    }
+                }
+                
+                const tasks = [...this.state.tasks, res];
+
+                this.setState({
+                    tasks,
+                    openNewTaskModal: false
+                });
+
+            })
+            .catch((error)=>{
+                console.log('catch error', error);
+            });
+
+
     };
 
     deleteTask = (taskId) => {
-         fetch(`http://localhost:3001/task/${taskId}`, {
+        fetch(`http://localhost:3001/task/${taskId}`, {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": 'application/json'
             }
         })
-        .then(async(response)=>{
-            const res = await response.json();
-            if(response.status >= 400 && response.status <600){
-                if(res.error){
-                    throw res.error;
-                }
-                else {
-                    throw new Error('smth went wrong')
-                }
+            .then(async (response) => {
+                const res = await response.json();
 
-            }
-          
-         const newTasks = this.state.tasks.filter((task) => taskId !== task._id);
+                if(response.status >=400 && response.status < 600){
+                    if(res.error){
+                        throw res.error;
+                    }
+                    else {
+                        throw new Error('Something went wrong!');
+                    }
+                }
+                
+        const newTasks = this.state.tasks.filter((task) => taskId !== task._id);
 
         this.setState({
             tasks: newTasks
         });
-        })
-        .catch((error)=>{
-            console.log("catch error = ", error);
-        })      
-
+            })
+            .catch((error)=>{
+                console.log('catch error', error);
+            });
     };
 
     toggleTask = (taskId) => {
@@ -122,51 +129,47 @@ class ToDo extends Component {
 
 
     removeSelected = () => {
-
         const { selectedTasks, tasks } = this.state;
 
         const body = {
             tasks: [...selectedTasks]
-        }
-        
-        fetch('http://localhost:3001/task', {
+        };
+        fetch(`http://localhost:3001/task`, {
             method: 'PATCH',
-            body: JSON.stringify(body),
             headers: {
-                'Content-Type': 'application/json'
-            }
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify(body)
         })
-        .then(async(response)=>{
-            const res = await response.json();
+            .then(async (response) => {
+                const res = await response.json();
 
-            if(response.status >= 400 && response.status <600){
-                if(res.error){
-                    throw res.error;
+                if(response.status >=400 && response.status < 600){
+                    if(res.error){
+                        throw res.error;
+                    }
+                    else {
+                        throw new Error('Something went wrong!');
+                    }
                 }
-                else {
-                    throw new Error('smth went wrong')
-                }
 
-            }
+                const newTasks = tasks.filter((task) => {
+                    if (selectedTasks.has(task._id)) {
+                        return false;
+                    }
+                    return true;
+                });
         
-        const newTasks = tasks.filter((task) => {
-            if (selectedTasks.has(task._id)) {
-                return false;
-            }
-            return true;
-        });
+                this.setState({
+                    tasks: newTasks,
+                    selectedTasks: new Set(),
+                    showConfirm: false
+                });
+            })
+            .catch((error)=>{
+                console.log('catch error', error);
+            });
 
-        this.setState({
-            tasks: newTasks,
-            selectedTasks: new Set(),
-            showConfirm: false
-        });
-
-        })
-        .catch((error)=>{
-            console.log("catch error = ", error);
-        })
-        
     };
 
     toggleConfirm = () => {
@@ -188,51 +191,49 @@ class ToDo extends Component {
         });
     };
 
-    toggleNewTaskModal = ()=>{
+    toggleNewTaskModal = () => {
         this.setState({
             openNewTaskModal: !this.state.openNewTaskModal
         });
     };
 
-    handleEdit = (editTask)=>{
+    handleEdit = (editTask) => {
         this.setState({ editTask });
-
     };
 
-    handleSaveTask = (editedTask)=>{
+    handleSaveTask = (editedTask) => {
         fetch(`http://localhost:3001/task/${editedTask._id}`, {
             method: 'PUT',
-            body: JSON.stringify(editedTask),
             headers: {
-                'Content-Type': 'application/json'
-            }
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify(editedTask)
         })
-        .then(async(response)=>{
-            const res = await response.json();
-            if(response.status >= 400 && response.status <600){
-                if(res.error){
-                    throw res.error;
-                }
-                else {
-                    throw new Error('smth went wrong')
-                }
+            .then(async (response) => {
+                const res = await response.json();
 
-            }
+                if(response.status >=400 && response.status < 600){
+                    if(res.error){
+                        throw res.error;
+                    }
+                    else {
+                        throw new Error('Something went wrong!');
+                    }
+                }
+                
         const tasks = [...this.state.tasks];
-        const foundIndex = tasks.findIndex((task)=> task._id === editedTask._id);
+        const foundIndex = tasks.findIndex((task) => task._id === editedTask._id);
         tasks[foundIndex] = editedTask;
-        
+
         this.setState({
             tasks,
             editTask: null
         });
-
-          
-          
-        })
-        .catch((error)=>{
-            console.log("catch error = ", error);
-        })              
+              
+            })
+            .catch((error)=>{
+                console.log('catch error', error);
+            });
     };
 
     render() {
@@ -321,19 +322,20 @@ class ToDo extends Component {
                 {
                     openNewTaskModal &&
                     <NewTask
-                    className='modal'
-                    onClose = {this.toggleNewTaskModal}
-                    onAdd={this.addTask}
-                />
+                        className='modal'
+                        onClose={this.toggleNewTaskModal}
+                        onAdd={this.addTask}
+                    />
                 }
                 {
-                    editTask && 
+                    editTask &&
                     <EditTaskModal
-                        data = {editTask}
-                        onClose = {()=> this.handleEdit(null)}
-                        onSave = {this.handleSaveTask}
-                     />
+                        data={editTask}
+                        onClose={() => this.handleEdit(null)}
+                        onSave={this.handleSaveTask}
+                    />
                 }
+
             </div>
         );
     }
