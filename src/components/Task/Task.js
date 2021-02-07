@@ -27,15 +27,17 @@ class Task extends PureComponent {
                         onChange={this.handleChange}
                         checked={selected}
                     />
-                     <Link to='/task'>
+                    <Link to={`/task/${task._id}`}>
                     <Card.Title>{task.title}</Card.Title>
                     </Link>
+                    
                     <Card.Text>
-                        {task.description}
+                       Description: {task.description}
                     </Card.Text>
-                     <Card.Text>
-                         Date: {formatDate(task.date)}
-                    </Card.Text>
+                    <Card.Text>
+                {/*Date: {task.date?.slice(0, 10)} */}    
+                    Date: {formatDate(task.date)}
+                </Card.Text>
                     <Button
                         className='m-1'
                         variant="warning"
