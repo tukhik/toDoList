@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import {formatDate} from '../../helpers/utils';
+import {Link} from 'react-router-dom';
 
 class Task extends PureComponent {
 
@@ -26,7 +27,9 @@ class Task extends PureComponent {
                         onChange={this.handleChange}
                         checked={selected}
                     />
+                     <Link to='/task'>
                     <Card.Title>{task.title}</Card.Title>
+                    </Link>
                     <Card.Text>
                         {task.description}
                     </Card.Text>
