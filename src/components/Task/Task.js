@@ -19,9 +19,9 @@ class Task extends PureComponent {
         const { disabled, onDelete, selected, onEdit } = this.props;
 
         return (
-            <Card className={`${styles.task} ${selected ? styles.selected : ""}`}>
+            <Card className={`${styles.task} ${selected ? styles.selected : ""}`}  >
 
-                <Card.Body>
+                <Card.Body >
                     <input
                         type="checkbox"
                         onChange={this.handleChange}
@@ -45,6 +45,7 @@ class Task extends PureComponent {
                         onClick={() => onEdit(task)}
                     >
                         <FontAwesomeIcon icon={faEdit} />
+
                     </Button>
 
                     <Button

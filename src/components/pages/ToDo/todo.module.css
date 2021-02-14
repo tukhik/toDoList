@@ -1,3 +1,9 @@
 .selected{
     color: red;
 }
+.ToDo{
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+}
+
