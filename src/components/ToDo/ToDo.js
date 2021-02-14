@@ -124,10 +124,14 @@ class ToDo extends Component {
     removeSelected = () => {
 
         const { selectedTasks, tasks } = this.state;
+
+        const body = {
+            tasks: [...selectedTasks]
+        }
         
         fetch('http://localhost:3001/task', {
             method: 'PATCH',
-            //body: JSON.stringify(tasks),
+            body: JSON.stringify(body),
             headers: {
                 'Content-Type': 'application/json'
             }
