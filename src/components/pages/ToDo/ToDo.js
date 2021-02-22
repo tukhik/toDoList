@@ -6,11 +6,12 @@ import NewTask from '../../NewTask/NewTask';
 import Confirm from '../../Confirm';
 import EditTaskModal from '../../EditTaskModal';
 import { connect } from 'react-redux';
-import { getTasks, deleteTask,deleteTasks } from '../../../store/actions';
+import { getTasks, deleteTask,deleteTasks, editTask } from '../../../store/actions';
 
 
 class ToDo extends Component {
     state = {
+        // tasks: [],
         selectedTasks: new Set(),
         showConfirm: false,
         openNewTaskModal: false,
@@ -38,9 +39,14 @@ class ToDo extends Component {
             });
             return;
         }
-           
-    }
 
+        if (!prevProps.editTasksSuccess && this.props.editTasksSuccess){
+            this.setState({
+                editTask: null
+            });
+            return;
+        }
+    }
     toggleTask = (taskId) => {
         const selectedTasks = new Set(this.state.selectedTasks);
         if (selectedTasks.has(taskId)) {
@@ -97,32 +103,32 @@ class ToDo extends Component {
                 "Content-Type": 'application/json'
             },
             body: JSON.stringify(editedTask)
-        })
+            })
             .then(async (response) => {
                 const res = await response.json();
 
-                if (response.status >= 400 && response.status < 600) {
-                    if (res.error) {
-                        throw res.error;
-                    }
-                    else {
-                        throw new Error('Something went wrong!');
-                    }
+            if (response.status >= 400 && response.status < 600) {
+                if (res.error) {
+                    throw res.error;
                 }
+                else {
+                    throw new Error('Something went wrong!');
+                    }
+            }
 
-                const tasks = [...this.state.tasks];
-                const foundIndex = tasks.findIndex((task) => task._id === editedTask._id);
-                tasks[foundIndex] = editedTask;
+            const tasks = [...this.state.tasks];
+            const foundIndex = tasks.findIndex((task) => task._id === editedTask._id);
+            tasks[foundIndex] = editedTask;
 
-                this.setState({
-                    tasks,
-                    editTask: null
-                });
-
-            })
-            .catch((error) => {
-                console.log('catch error', error);
+            this.setState({
+                tasks,
+                editTask: null
             });
+
+        })
+        .catch((error) => {
+            console.log('catch error', error);
+        });
     };
 
     render() {
@@ -192,9 +198,8 @@ class ToDo extends Component {
                                 disabled={!selectedTasks.size}
                             >
                                 Delete selected
-                   </Button>
+                            </Button>
                         </Col>
-
                     </Row>
 
                     <Row>
@@ -213,7 +218,6 @@ class ToDo extends Component {
                     openNewTaskModal &&
                     <NewTask
                         onClose={this.toggleNewTaskModal}
-                    // onAdd={this.props.addTask}
                     />
 
                 }
@@ -222,7 +226,6 @@ class ToDo extends Component {
                     <EditTaskModal
                         data={editTask}
                         onClose={() => this.handleEdit(null)}
-                        onSave={this.handleSaveTask}
                     />
                 }
 
@@ -235,10 +238,10 @@ const mapStateToProps = (state) => {
     return {
         tasks: state.tasks,
         addTaskSuccess: state.addTaskSuccess,
-        deleteTasksSuccess: state.deleteTasksSuccess
+        deleteTasksSuccess: state.deleteTasksSuccess,
+        editTasksSuccess: state.editTasksSuccess
     };
 };
-
 
 const mapDispatchToProps = {
     getTasks,

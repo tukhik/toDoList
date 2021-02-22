@@ -8,8 +8,10 @@ import NotFound from './components/pages/NotFound/NotFound';
 import NavMenu from './components/NavMenu/NavMenu';
 import SingleTask from './components/pages/SingleTask/SingleTask';
 import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
+import Spinner from './components/Spinner/Spinner';
+import {connect} from 'react-redux';
 
-function App() {
+function App({loading}) {
   return (
     <div className="App">
     <BrowserRouter>
@@ -52,12 +54,16 @@ function App() {
 
 
     </BrowserRouter>
-
-
+    {loading && <Spinner /> }
     </div>
   );
 }
 
+const mapStateToProps = (state) => {
+    return {
+        loading: state.loading
+    };
+};
 
 
-export default App;
+export default connect(mapStateToProps)(App);
