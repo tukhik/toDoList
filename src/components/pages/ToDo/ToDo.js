@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import styles from './todo.module.css';
+import styles from './todo.module.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import Task from '../../Task/Task';
 import NewTask from '../../NewTask/NewTask';
@@ -243,7 +243,7 @@ class ToDo extends Component {
         const taskComponents = tasks.map((task) => {
 
             return (
-                <Col
+                <Col 
                     key={task._id}
                     xs={12}
                     sm={6}
@@ -251,7 +251,7 @@ class ToDo extends Component {
                     lg={3}
                     xl={2}
                 >
-                    <Task
+                    <Task  
                         data={task}
                         onToggle={this.toggleTask}
                         disabled={!!selectedTasks.size}
@@ -265,9 +265,11 @@ class ToDo extends Component {
 
         return (
             <div>
-                <h2>ToDo List</h2>
-                <Container>
-                    <Row className="justify-content-center">
+                <h2  
+                 className={styles.ToDo}
+                 >ToDo List</h2>
+                <Container >
+                    <Row className="justify-content-center"  >
                         <Col>
                             <Button
                                 variant="primary"

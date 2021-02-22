@@ -6,12 +6,13 @@ import styles from './navMenuStyle.module.css';
 export default function NavMenu(){
 
     return(
-        <Navbar bg="dark" variant="dark">
-        <Nav className="mr-auto">
+        <Navbar bg="dark" variant="dark" >
+        <Nav>
 
         <NavLink 
         to='/' 
         activeClassName={styles.active}
+        className = {styles.navbar}
         exact
         >
         Home
@@ -19,6 +20,7 @@ export default function NavMenu(){
         <NavLink
        to='/about' 
          activeClassName={styles.active}
+         className = {styles.navbar}
          exact
           >
           About us
@@ -26,6 +28,7 @@ export default function NavMenu(){
         <NavLink
          to='/contact'
          activeClassName={styles.active}
+         className = {styles.navbar}
          exact
          >
          Contact us
