@@ -1,54 +1,52 @@
+import * as actionTypes from './actionTypes';
+
 const defaultState = { 
     tasks: [],
     addTaskSuccess: false,
-    deleteTasksSuccess: false
+    deleteTasksSuccess: false,
+    editTasksSuccess: false,
+    loading: false
 };
 
 
 export default function reducer(state=defaultState, action){
     
     switch(action.type){
-      case 'INCREMENT':{
+      case actionTypes.PENDING:{
         return {
           ...state,
-          count: state.count+1
+          loading: true,
+          addTaskSuccess: false,
+          deleteTasksSuccess: false,
+          editTasksSuccess: false
         };
       }
-      case 'DECREMENT':{
+      case actionTypes.GET_TASKS:{
         return {
           ...state,
-          count: state.count-1
+          tasks: action.tasks,
+          loading: false
         };
       }
-      case 'GET_TASKS':{
-        return {
-          ...state,
-          tasks: action.tasks
-        };
-      }
-      case 'ADD_TASK':{
+      case actionTypes.ADD_TASK:{
         return {
           ...state,
           tasks: [...state.tasks, action.task],
-          addTaskSuccess: true
+          addTaskSuccess: true,
+          loading: false
         };
       }
-      case 'ADDING_TASK':{
-        return {
-          ...state,
-          addTaskSuccess: false
-        };
-      }
-      case 'DELETE_TASK':{
+      case actionTypes.DELETE_TASK:{
 
         const newTasks = state.tasks.filter((task) => action.taskId !== task._id);
         return {
           ...state,
-          tasks: newTasks
+          tasks: newTasks,
+          loading: false
         };
       }
 
-      case 'DELETE_TASKS':{
+      case actionTypes.DELETE_TASKS:{
 
         const newTasks = state.tasks.filter((task) => {
           if (action.taskIds.has(task._id)) {
@@ -60,9 +58,22 @@ export default function reducer(state=defaultState, action){
         return {
           ...state,
           tasks: newTasks,
-          deleteTasksSuccess: true
+          deleteTasksSuccess: true,
+          loading: false
+        };
+      }
+      case actionTypes.EDIT_TASK:{
+        const tasks = [...state.tasks];
+        const foundIndex = tasks.findIndex((task) => task._id === action.editedTask._id);
+        tasks[foundIndex] = action.editedTask;
+       
+        return {
+          ...state,
+          tasks,
+          editTasksSuccess: true,
+          loading: false
         };
       }
       default: return state;
     }
-    }
+}  
