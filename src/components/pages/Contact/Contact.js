@@ -18,6 +18,7 @@ const [errors, setErrors] = useState({
     message: null
 });
 
+
 const handleChange = ({target: {name, value}})=>{
 
   if(!value){
@@ -79,7 +80,7 @@ const handleSubmit = ()=>{
                     }
                 }
                 
-                //console.log('Form sent successfully');
+                console.log('Form sent successfully');
                 setValues({
                     name: '',
                     email: '',
@@ -88,7 +89,7 @@ const handleSubmit = ()=>{
 
             })
             .catch((error)=>{
-                //console.log('catch error', error);
+                console.log('catch error', error);
             });
 
         return;
@@ -168,3 +169,4 @@ const handleSubmit = ()=>{
         </Container>
     );
 };
+

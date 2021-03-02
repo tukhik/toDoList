@@ -7,18 +7,18 @@ export default function NavMenu(){
 
     return(
         <Navbar bg="dark" variant="dark" >
-        <Nav>
-
+        <Nav className="mr-auto container">
+        
         <NavLink 
         to='/' 
         activeClassName={styles.active}
-        className = {styles.navbar}
         exact
+        className = {styles.navbar}
         >
         Home
         </NavLink>
         <NavLink
-       to='/about' 
+         to='/about'
          activeClassName={styles.active}
          className = {styles.navbar}
          exact
@@ -34,7 +34,9 @@ export default function NavMenu(){
          Contact us
          </NavLink>
 
+
         </Nav>
       </Navbar>
     );
 };
+

@@ -5,8 +5,9 @@ import Task from '../../Task/Task';
 import NewTask from '../../NewTask/NewTask';
 import Confirm from '../../Confirm';
 import EditTaskModal from '../../EditTaskModal';
+import Search from '../../Search/Search';
 import { connect } from 'react-redux';
-import { getTasks, deleteTask,deleteTasks, editTask } from '../../../store/actions';
+import { getTasks, deleteTask, deleteTasks } from '../../../store/actions';
 
 
 class ToDo extends Component {
@@ -25,14 +26,14 @@ class ToDo extends Component {
 
 
     componentDidUpdate(prevProps) {
-        if (!prevProps.addTaskSuccess && this.props.addTaskSuccess){
+        if (!prevProps.addTaskSuccess && this.props.addTaskSuccess) {
             this.setState({
                 openNewTaskModal: false
             });
             return;
         }
 
-        if (!prevProps.deleteTasksSuccess && this.props.deleteTasksSuccess){
+        if (!prevProps.deleteTasksSuccess && this.props.deleteTasksSuccess) {
             this.setState({
                 selectedTasks: new Set(),
                 showConfirm: false
@@ -40,13 +41,16 @@ class ToDo extends Component {
             return;
         }
 
-        if (!prevProps.editTasksSuccess && this.props.editTasksSuccess){
+        if (!prevProps.editTasksSuccess && this.props.editTasksSuccess) {
             this.setState({
                 editTask: null
             });
             return;
         }
     }
+
+
+
     toggleTask = (taskId) => {
         const selectedTasks = new Set(this.state.selectedTasks);
         if (selectedTasks.has(taskId)) {
@@ -64,7 +68,7 @@ class ToDo extends Component {
 
     removeSelected = () => {
         const { selectedTasks } = this.state;
-    this.props.deleteTasks(selectedTasks);
+        this.props.deleteTasks(selectedTasks);
     };
 
     toggleConfirm = () => {
@@ -103,32 +107,32 @@ class ToDo extends Component {
                 "Content-Type": 'application/json'
             },
             body: JSON.stringify(editedTask)
-            })
+        })
             .then(async (response) => {
                 const res = await response.json();
 
-            if (response.status >= 400 && response.status < 600) {
-                if (res.error) {
-                    throw res.error;
-                }
-                else {
-                    throw new Error('Something went wrong!');
+                if (response.status >= 400 && response.status < 600) {
+                    if (res.error) {
+                        throw res.error;
                     }
-            }
+                    else {
+                        throw new Error('Something went wrong!');
+                    }
+                }
 
-            const tasks = [...this.state.tasks];
-            const foundIndex = tasks.findIndex((task) => task._id === editedTask._id);
-            tasks[foundIndex] = editedTask;
+                const tasks = [...this.state.tasks];
+                const foundIndex = tasks.findIndex((task) => task._id === editedTask._id);
+                tasks[foundIndex] = editedTask;
 
-            this.setState({
-                tasks,
-                editTask: null
+                this.setState({
+                    tasks,
+                    editTask: null
+                });
+
+            })
+            .catch((error) => {
+                console.log('catch error', error);
             });
-
-        })
-        .catch((error) => {
-            console.log('catch error', error);
-        });
     };
 
     render() {
@@ -161,21 +165,16 @@ class ToDo extends Component {
 
         return (
             <div>
-                <h2>ToDo List</h2>
+                <h2 className = "container">ToDo List</h2>
                 <Container>
+                    <Row>
+                        <Col >
+                            <Search />
+                        </Col>
+                    </Row>
                     <Row className="justify-content-center">
                         <Col>
-                            <Button
-                                variant="primary"
-                                onClick={this.toggleNewTaskModal}
-                            >
-                                Add new Task
-                     </Button>
-
-                        </Col>
-
-                        <Col>
-                            <Button
+                            <Button className = "col"
                                 variant="warning"
                                 onClick={this.selectAll}
                             >
@@ -184,7 +183,7 @@ class ToDo extends Component {
 
                         </Col>
                         <Col>
-                            <Button
+                            <Button className = "col"
                                 variant="warning"
                                 onClick={this.deSelectAll}
                             >
@@ -192,13 +191,22 @@ class ToDo extends Component {
                             </Button>
                         </Col>
                         <Col>
-                            <Button
+                            <Button className = "col"
                                 variant="danger"
                                 onClick={this.toggleConfirm}
                                 disabled={!selectedTasks.size}
                             >
                                 Delete selected
-                            </Button>
+                   </Button>
+                        </Col>
+                          <Col>
+                            <Button className = "col"
+                                variant="primary"
+                                onClick={this.toggleNewTaskModal}
+                            >
+                                Add new Task
+                        </Button>
+
                         </Col>
                     </Row>
 
@@ -218,6 +226,7 @@ class ToDo extends Component {
                     openNewTaskModal &&
                     <NewTask
                         onClose={this.toggleNewTaskModal}
+                    // onAdd={this.props.addTask}
                     />
 
                 }
@@ -226,6 +235,7 @@ class ToDo extends Component {
                     <EditTaskModal
                         data={editTask}
                         onClose={() => this.handleEdit(null)}
+                    //onSave={this.handleSaveTask}
                     />
                 }
 
