@@ -12,7 +12,6 @@ import { getTasks, deleteTask, deleteTasks } from '../../../store/actions';
 
 class ToDo extends Component {
     state = {
-        // tasks: [],
         selectedTasks: new Set(),
         showConfirm: false,
         openNewTaskModal: false,
@@ -226,7 +225,6 @@ class ToDo extends Component {
                     openNewTaskModal &&
                     <NewTask
                         onClose={this.toggleNewTaskModal}
-                    // onAdd={this.props.addTask}
                     />
 
                 }
@@ -235,7 +233,6 @@ class ToDo extends Component {
                     <EditTaskModal
                         data={editTask}
                         onClose={() => this.handleEdit(null)}
-                    //onSave={this.handleSaveTask}
                     />
                 }
 

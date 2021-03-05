@@ -32,8 +32,9 @@ class SingleTask extends Component{
 
 render(){
     const {openEditModal} = this.state;
+    //console.log({openEditModal})
 
-const {task} = this.props;
+    const {task} = this.props;
 
     return(
      <div className='mt-5'>

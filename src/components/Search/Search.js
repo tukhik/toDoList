@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 import {formatDate} from '../../helpers/utils';
 import {getTasks} from '../../store/actions';
 import "react-datepicker/dist/react-datepicker.css";
+import {Container, Row, Col } from 'react-bootstrap';
 
 
 const statusOptions = [
@@ -166,7 +167,7 @@ function Search({getTasks}) {
                 </DropdownButton>
 
                 <InputGroup.Append>
-
+              
                     <Button 
                     variant="outline-primary"
                     onClick={handleSubmit}
@@ -175,20 +176,23 @@ function Search({getTasks}) {
                 </InputGroup.Append>
 
             </InputGroup>
-
+            <Container>
+              <Row >
                     {
                         dateOptions.map((option, index)=>(
-                            <div
+                            <Col
                             key={index}
                             >
                             <span>{option.label} </span>
-                            <DatePicker
+                            <DatePicker  className = "col"
                             selected={dates[option.value]}
                             onChange={(value)=> handleChangeDate(value, option.value)}
                             />
-                            </div>
+                            </Col>
                         ))
                     }
+                    </Row>
+                    </Container>
         </div>
     )
 }
