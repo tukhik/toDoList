@@ -24,6 +24,7 @@ const statusOptions = [
     }
 ];
 
+
 const sortOptions = [
     {
         label: ' All ',
@@ -93,12 +94,20 @@ function Search({getTasks}) {
         complete_gte: null
     });
 
+
+
     const handleChangeDate = (value, name)=>{
         setDates({
             ...dates,
             [name]: value
         });
     };
+
+    const handleReset = ()=>{  
+       getTasks();
+       
+    }
+
 
     const handleSubmit = ()=>{
         const params = {};
@@ -118,6 +127,7 @@ function Search({getTasks}) {
 
        getTasks(params);
     };
+
 
     return (
         <div className="mb-3">
@@ -167,13 +177,16 @@ function Search({getTasks}) {
                 </DropdownButton>
 
                 <InputGroup.Append>
+                 <Button  variant="outline-primary" onClick = {handleReset}> Rset filters</Button>
               
                     <Button 
                     variant="outline-primary"
                     onClick={handleSubmit}
                     >
                     Search</Button>
+
                 </InputGroup.Append>
+              
 
             </InputGroup>
             <Container>
@@ -199,6 +212,6 @@ function Search({getTasks}) {
 
 const mapDispatchToProps = {
     getTasks
-  };
+};
 
 export default connect(null, mapDispatchToProps)(Search);

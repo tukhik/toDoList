@@ -9,7 +9,7 @@ const defaultState = {
     editTaskSuccess: false,
     loading: false,
     successMessage: null,
-    errorMessage: null
+    errorMessage: null,
 };
 
 
@@ -23,6 +23,7 @@ export default function reducer(state=defaultState, action){
           addTaskSuccess: false,
           deleteTasksSuccess: false,
           editTasksSuccess: false,
+          editTaskSuccess: false,
           successMessage: null,
           errorMessage: null
         };

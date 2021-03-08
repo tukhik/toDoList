@@ -77,11 +77,13 @@ class ToDo extends Component {
     };
 
     selectAll = () => {
-        const taskIds = this.state.tasks.map((task) => task._id);
+       const { tasks } = this.props;
+       const taskIds =tasks.map((task)=> task._id);
         this.setState({
             selectedTasks: new Set(taskIds)
         });
     };
+
 
     deSelectAll = () => {
         this.setState({
