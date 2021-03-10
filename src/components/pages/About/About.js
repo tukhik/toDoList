@@ -1,6 +1,4 @@
 import React from 'react';
-//import styles from './aboutStyle.module.css';
-
 
 export default function About(props){
     return(

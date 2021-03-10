@@ -103,10 +103,9 @@ function Search({getTasks}) {
         });
     };
 
-    const handleReset = ()=>{  
-       getTasks();
-       
-    }
+const handleReset = ()=>{  
+    getTasks();
+}
 
 
     const handleSubmit = ()=>{
