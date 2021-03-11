@@ -33,6 +33,23 @@ export default function NavMenu(){
          >
          Contact us
          </NavLink>
+         <NavLink
+         to='/register'
+         activeClassName={styles.active}
+         className = {styles.navbar}
+         exact
+         >
+        Register
+         </NavLink>
+          <NavLink
+         to='/login'
+         activeClassName={styles.active}
+         className = {styles.navbar}
+         exact
+         >
+        Login
+         </NavLink>
+
 
 
         </Nav>

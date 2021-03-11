@@ -105,6 +105,22 @@ function Search({getTasks}) {
 
 const handleReset = ()=>{  
     getTasks();
+    setSort({
+       value: ''
+    });
+
+    setStatus({
+        value: ''
+    });
+
+    setSearch('');
+
+    setDates({
+        create_lte: null,
+        create_gte: null,
+        complete_lte: null,
+        complete_gte: null
+       })   
 }
 
 
@@ -126,7 +142,6 @@ const handleReset = ()=>{
 
        getTasks(params);
     };
-
 
     return (
         <div className="mb-3">
@@ -176,7 +191,7 @@ const handleReset = ()=>{
                 </DropdownButton>
 
                 <InputGroup.Append>
-                 <Button  variant="outline-primary" onClick = {handleReset}> Rset filters</Button>
+                 <Button  variant="outline-primary" onClick = {handleReset}> Reset filters</Button>
               
                     <Button 
                     variant="outline-primary"
