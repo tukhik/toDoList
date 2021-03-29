@@ -84,7 +84,7 @@ render(){
                         variant="info"
                         onClick={() => editTask({
                             status: "done",
-                            _id: task._id
+                            _id: task._id,
                         })}
                     >
                         <FontAwesomeIcon icon={faStickyNote} />
@@ -94,6 +94,7 @@ render(){
                     className='m-1'
                     variant="warning"
                     onClick={this.toggleEditModal}
+                     from='single'
                 >
                     <FontAwesomeIcon icon={faEdit} />
                 </Button>
@@ -102,6 +103,7 @@ render(){
                 className='m-1'
                     variant="danger"
                     onClick={this.deleteTask}
+                     from='single'
 
                 >
                     <FontAwesomeIcon icon={faTrash} />

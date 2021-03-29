@@ -1,116 +1,111 @@
-import React, {useState} from 'react';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import {NavLink} from 'react-router-dom';
+import React, { useState } from 'react';
+import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import styles from './loginStyle.module.css';
+import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {login} from '../../../store/actions';
 
-const requiredErrorMessage = 'Field is required';
-
-
-export default function  Login() {
-
-const [values, setValues] = useState({
-    email: '',
-    password: ''
-});
-
-const [errors, setErrors] = useState({
-    email: null,
-    password: null
-});
-
-
-const handleChange = ({target: {name, value}})=>{
-
-  if(!value){
-    setErrors({
-        ...errors,
-        [name]: requiredErrorMessage
+function Login(props) {
+    const [values, setValues] = useState({
+        email: '',
+        password: ''
     });
-  }
-  else {
-    setErrors({
-        ...errors,
-        [name]: null
-    }); 
-  }
 
-  if(name==='email' && value){
-      const emailReg = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-      if(!emailReg.test(value)){
+    const [errors, setErrors] = useState({
+        email: null,
+        password: null
+    });
+
+    const handleSubmit = () => {
+        const {email, password} = values;
+
         setErrors({
-            ...errors,
-            email: 'Invalid email'
-        }); 
-      }
-  }
+            email: email ? null : 'Email is required',
+            password: password ? null : 'Password is required'
+        });
 
-   if(name==='password' && value){
-   	if(value.length < 6){
-   		setErrors({
-            ...errors,
-            email: 'Invalid email'
-        }); 
-   	}
-   }
-
-
-  setValues({
-        ...values,
-        [name]: value
-  });
-
-};
-
+        if(email && password){
+            props.login(values);
+        }
 
     
-        return (
+    };
+
+    const handleChange = ({ target: { name, value } }) => {
+        setValues({
+            ...values,
+            [name]: value
+        });
+
+        setErrors({
+            ...errors,
+            [name]: null
+        });
+
+    };
+
+    return (
+
+        <div className={styles.main}>
             <Container>
-             <Row className='justify-content-center'>
-              <Col xs={7}>
-              <Form className='mt-5'>
-                <h3 className='text-center'>Log in</h3>
 
-                 <Form.Group>
-                     <Form.Control  type="email" 
-                     name = "email" 
-                     placeholder="Enter email"
-                     value={values.name}
-                     onChange={handleChange} 
-                    />
-                    <Form.Text className="text-danger">
-                        {errors.name}
-                    </Form.Text>
-                 </Form.Group>
+                <Row className="justify-content-center">
+                    <Col xs={12} sm={8} md={6}>
+                        <Form>
+                            <h3 className={styles.heading}>Login</h3>
+                    <Form.Group>
+                                <Form.Control
+                                    className={errors.email? styles.invalid: ''}
+                                    type="email"
+                                    name="email"
+                                    placeholder="Enter email"
+                                    value={values.email}
+                                    onChange={handleChange}
+                                />
+                                {
+                                    <Form.Text className="text-danger" >
+                                    {errors.email}
+                                </Form.Text>
+                                }
+                               
+                            </Form.Group>
 
-                <Form.Group>
-                   <Form.Control type="password"  
-                   name="password" 
-                   placeholder="Enter password" 
-                    value={values.name}
-                     onChange={handleChange} 
-                   />
-                    <Form.Text className="text-danger">
-                        {errors.name}
-                    </Form.Text>
-                </Form.Group>
-                <div className="text-center">
-	                <Button 
-	                    variant="primary"
-	                    /*onClick = {handleSubmit}*/
-	                    >
-	                    Login
-	                </Button>
-                </div>
-                <p className="register">
-                    <NavLink
-        			 to='/register'      
-        				 exact>
-        			Don't have account yet? Register now!
-         			</NavLink> 
-                </p>
-                </Form>
-                </Col>
+                            <Form.Group>
+                                <Form.Control
+                                    className={errors.password? styles.invalid: ''}
+                                    type="password"
+                                    placeholder="Password"
+                                    value={values.password}
+                                    onChange={handleChange}
+                                    name="password"
+                                />
+                                {
+                                    <Form.Text className="text-danger">
+                                    {errors.password}
+                                </Form.Text>
+                                }
+                                
+                            </Form.Group>
+
+                            <div className="text-center">
+                                <Button
+                                    variant="primary"
+                                    onClick={handleSubmit}
+                                >
+                                    Login
+                            </Button>
+                            </div>
+                            <Link to='/register'>Don't have account yet? Register now!</Link>
+                        </Form>
+                    </Col>
                 </Row>
             </Container>
 
-        );
+        </div>
+    );
 }
+
+const mapDispatchToProps = {
+    login
+}
+export default connect(null, mapDispatchToProps)(Login);

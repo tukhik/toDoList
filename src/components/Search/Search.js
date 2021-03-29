@@ -148,6 +148,7 @@ const handleReset = ()=>{
             <InputGroup >
 
                 <FormControl
+                    value={search}
                     placeholder="Search"
                     onChange={(event) => setSearch(event.target.value)}
                 />
@@ -224,8 +225,9 @@ const handleReset = ()=>{
     )
 }
 
+
 const mapDispatchToProps = {
     getTasks
-};
+  };
 
 export default connect(null, mapDispatchToProps)(Search);
