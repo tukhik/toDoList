@@ -103,10 +103,25 @@ function Search({getTasks}) {
         });
     };
 
-    const handleReset = ()=>{  
-       getTasks();
-       
-    }
+const handleReset = ()=>{  
+    getTasks();
+    setSort({
+       value: ''
+    });
+
+    setStatus({
+        value: ''
+    });
+
+    setSearch('');
+
+    setDates({
+        create_lte: null,
+        create_gte: null,
+        complete_lte: null,
+        complete_gte: null
+       })   
+}
 
 
     const handleSubmit = ()=>{
@@ -128,12 +143,12 @@ function Search({getTasks}) {
        getTasks(params);
     };
 
-
     return (
         <div className="mb-3">
             <InputGroup >
 
                 <FormControl
+                    value={search}
                     placeholder="Search"
                     onChange={(event) => setSearch(event.target.value)}
                 />
@@ -177,7 +192,7 @@ function Search({getTasks}) {
                 </DropdownButton>
 
                 <InputGroup.Append>
-                 <Button  variant="outline-primary" onClick = {handleReset}> Rset filters</Button>
+                 <Button  variant="outline-primary" onClick = {handleReset}> Reset filters</Button>
               
                     <Button 
                     variant="outline-primary"
@@ -210,8 +225,9 @@ function Search({getTasks}) {
     )
 }
 
+
 const mapDispatchToProps = {
     getTasks
-};
+  };
 
 export default connect(null, mapDispatchToProps)(Search);

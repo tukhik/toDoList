@@ -1,4 +1,5 @@
 import * as actionTypes from './actionTypes';
+import {checkLoginStatus} from '../helpers/storage';
 
 const defaultState = { 
     tasks: [],
@@ -10,6 +11,7 @@ const defaultState = {
     loading: false,
     successMessage: null,
     errorMessage: null,
+    isAuthenticated: checkLoginStatus()
 };
 
 
@@ -99,13 +101,23 @@ export default function reducer(state=defaultState, action){
         };
       }
       case actionTypes.EDIT_TASK:{
+        let successMessage =  'Task edited successfully!!!';
+        if(action.status){
+          if(action.status ==='done'){
+            successMessage = "Your task completed";
+          } else {
+            successMessage = "Your task active now";
+          }
+          
+        }
+
         if(action.from === 'single'){
           return {
             ...state,
             task: action.editedTask,
             editTaskSuccess: true,
             loading: false,
-            successMessage: 'Task edited successfully!!!'
+            successMessage: successMessage
           };
 
         }
@@ -119,10 +131,25 @@ export default function reducer(state=defaultState, action){
           tasks,
           editTasksSuccess: true,
           loading: false,
-          successMessage: 'Task edited successfully!!!'
+          successMessage: successMessage
         };
       }
+     case actionTypes.REGISTER_SUCCESS:{
+        return {
+          ...state,
+          loading: false,
+          successMessage: 'Congrats, you are a new user now!!!'
+        };
+      }
+
+      case actionTypes.LOGIN_SUCCESS:{
+        return {
+          ...state,
+          loading: false,
+          isAuthenticated: true
+        };
+      }
+
       default: return state;
     }
     }
-    

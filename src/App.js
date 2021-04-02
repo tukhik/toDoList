@@ -3,6 +3,8 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ToDo from './components/pages/ToDo/ToDo';
 import About from './components/pages/About/About';
+import Login from './components/pages/Login/Login';
+import Register from './components/pages/Register/Register';
 import Contact from './components/pages/Contact/Contact';
 import NotFound from './components/pages/NotFound/NotFound';
 import NavMenu from './components/NavMenu/NavMenu';
@@ -61,6 +63,16 @@ function App({loading, successMessage, errorMessage}) {
       <Route 
       path='/contact'
       component = {Contact}
+      exact
+      />
+      <Route 
+      path='/login'
+      component = {Login}
+      exact
+      />
+      <Route 
+      path='/register'
+      component = {Register}
       exact
       />
       <Route 

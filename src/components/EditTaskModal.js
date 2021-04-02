@@ -31,7 +31,7 @@ class EditTaskModal extends Component{
             this.handleSubmit();
         }
     };
-
+    
     handleSubmit = ()=>{
         const title = this.state.title.trim();
         const description = this.state.description.trim();

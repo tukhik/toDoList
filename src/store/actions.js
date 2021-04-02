@@ -103,7 +103,10 @@ export function editTask(data, from) {
         dispatch({ type: actionTypes.PENDING });
         request(`${apiHost}/task/${data._id}`, 'PUT', data)
             .then((editedTask) => {
-                dispatch({ type: actionTypes.EDIT_TASK, editedTask, from });
+                dispatch({ type: actionTypes.EDIT_TASK, 
+                    editedTask, from,
+                    status: data.status    
+                    });
             })
             .catch((err) => {
                 dispatch({
@@ -113,3 +116,46 @@ export function editTask(data, from) {
             });
     }
 }
+
+
+
+export function register(data) {
+    return function (dispatch) {
+        dispatch({ type: actionTypes.PENDING });
+        request(`${apiHost}/user`, 'POST', data)
+            .then(() => {
+                dispatch({ 
+                    type: actionTypes.REGISTER_SUCCESS, 
+                });
+                history.push('/login');
+            })
+            .catch((err) => {
+                dispatch({
+                    type: actionTypes.ERROR,
+                    error: err.message
+                });
+            });
+    }
+}
+
+export function login(data) {
+    return function (dispatch) {
+        dispatch({ type: actionTypes.PENDING });
+        request(`${apiHost}/user/sign-in`, 'POST', data)
+            .then((res) => {
+                localStorage.setItem('token', JSON.stringify(res));
+
+                dispatch({ 
+                    type: actionTypes.LOGIN_SUCCESS, 
+                });
+                history.push('/');
+            })
+            .catch((err) => {
+                dispatch({
+                    type: actionTypes.ERROR,
+                    error: err.message
+                });
+            });
+    }
+}
+
