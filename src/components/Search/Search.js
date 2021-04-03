@@ -134,6 +134,7 @@ function Search({getTasks}) {
             <InputGroup >
 
                 <FormControl
+                    value={search}
                     placeholder="Search"
                     onChange={(event) => setSearch(event.target.value)}
                 />

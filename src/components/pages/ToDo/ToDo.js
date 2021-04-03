@@ -198,7 +198,7 @@ class ToDo extends Component {
                                 disabled={!selectedTasks.size}
                             >
                                 Delete selected
-                   </Button>
+                            </Button>
                         </Col>
                           <Col>
                             <Button className = "col"

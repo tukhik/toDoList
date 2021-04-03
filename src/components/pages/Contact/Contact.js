@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+    import React, {useState} from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import styles from './contactStyle.module.css';
 
@@ -52,7 +52,7 @@ const handleChange = ({target: {name, value}})=>{
 
 };
 
-const handleSubmit = ()=>{
+const    = ()=>{
     const errorsArr = Object.values(errors);
     const erorsExist = !errorsArr.every(el => el===null);
 
@@ -104,6 +104,18 @@ const handleSubmit = ()=>{
     }
 
 };
+
+const {sendFormSuccess} = this.props;
+
+useEffect(()=>{
+    if(sendFormSuccess){
+        setValues({
+            name: '',
+            email: '',
+            message: ''
+        });
+    }
+}, [sendFormSuccess]);
 
     return (
         <Container>
@@ -169,4 +181,3 @@ const handleSubmit = ()=>{
         </Container>
     );
 };
-
