@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ToDo from './components/pages/ToDo/ToDo';
 import About from './components/pages/About/About';
@@ -99,7 +98,7 @@ function App({loading, successMessage, errorMessage}) {
 
 
     </Router>
-{ loading && <Spinner />}
+{loading && <Spinner />}
 <ToastContainer />
 
 <Footer />
