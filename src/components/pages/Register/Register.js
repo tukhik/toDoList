@@ -71,7 +71,6 @@ function Register(props) {
                             <h3 className={styles.heading}>Register</h3>
                             <Form.Group>
                             <Form.Control
-                            // className={errors.email? styles.invalid: ''}
                             type="text"
                             name="name"
                             placeholder="Enter your name"
@@ -81,7 +80,6 @@ function Register(props) {
                         </Form.Group>
                         <Form.Group>
                         <Form.Control
-                        // className={errors.email? styles.invalid: ''}
                         type="text"
                         name="surname"
                         placeholder="Enter your surname"

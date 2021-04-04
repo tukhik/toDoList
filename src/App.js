@@ -46,7 +46,7 @@ function App({loading, successMessage, errorMessage}) {
     <Router history={history}>
     <NavMenu />
 
-        <Switch>
+       <Switch>
       <AuthRoute 
       path='/'
       component = {ToDo}

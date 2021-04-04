@@ -72,8 +72,14 @@ export function logout(){
     localStorage.removeItem('token');
     store.dispatch({type: LOGOUT});
     history.push('/login');
+    console.log("LOOOOG")
 }
 
 export function checkLoginStatus(){
     return !!localStorage.getItem('token');
 } 
+
+export function removeToken(){
+    localStorage.removeItem('token');
+} 
+

@@ -2,7 +2,7 @@ import request from '../helpers/request';
 import requestWithoutToken from '../helpers/auth';
 import * as actionTypes from './actionTypes';
 import { history } from '../helpers/history';
-import {saveToken} from '../helpers/auth';
+import {saveToken, getToken, removeToken} from '../helpers/auth';
 
 const apiHost = process.env.REACT_APP_API_HOST;
 
@@ -166,3 +166,19 @@ export function login(data) {
             });
     }
 }
+
+
+export const signout = () => {//jwt -> {jwt : 'jwt string'}
+    return async (dispatch) => {
+        dispatch({type: actionTypes.PENDING});
+        request(`${apiHost}/user/sign-out`, 'POST', {jwt: await getToken()})
+            .then( token => {
+                removeToken();//
+                dispatch({type: actionTypes.SIGN_OUT}); // add token to localStorage 
+                history.push('/signin');                // and redirect to sign in page
+            })
+            .catch(err => {
+                dispatch({type: actionTypes.ERROR, message: err.message});
+            });
+    }
+};

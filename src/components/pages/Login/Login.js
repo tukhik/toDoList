@@ -53,7 +53,7 @@ function Login(props) {
                     <Col xs={12} sm={8} md={6}>
                         <Form>
                             <h3 className={styles.heading}>Login</h3>
-                    <Form.Group>
+                                <Form.Group>
                                 <Form.Control
                                     className={errors.email? styles.invalid: ''}
                                     type="email"

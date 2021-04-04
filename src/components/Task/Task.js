@@ -82,7 +82,6 @@ class Task extends PureComponent {
                     className='m-1'
                         variant="danger"
                         disabled={disabled}
-                        // onClick={() => this.deleteTask(task._id)}
                         onClick={() => onDelete(task._id)}
 
                     >
