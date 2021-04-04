@@ -44,9 +44,8 @@ if(token){
         return Promise.resolve(parsed.jwt);
     }
     else {
-        //update
         const apiHost = process.env.REACT_APP_API_HOST;
-       return requestWithoutToken(`${apiHost}/user/${decoded.userId}/token`,'PUT', {
+        return requestWithoutToken(`${apiHost}/user/${decoded.userId}/token`,'PUT', {
         refreshToken: parsed.refreshToken
     })
         .then(token => {
@@ -72,7 +71,6 @@ export function logout(){
     localStorage.removeItem('token');
     store.dispatch({type: LOGOUT});
     history.push('/login');
-    console.log("LOOOOG")
 }
 
 export function checkLoginStatus(){

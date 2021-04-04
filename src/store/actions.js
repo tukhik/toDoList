@@ -168,14 +168,14 @@ export function login(data) {
 }
 
 
-export const signout = () => {//jwt -> {jwt : 'jwt string'}
+export const signout = () => {
     return async (dispatch) => {
         dispatch({type: actionTypes.PENDING});
         request(`${apiHost}/user/sign-out`, 'POST', {jwt: await getToken()})
             .then( token => {
-                removeToken();//
-                dispatch({type: actionTypes.SIGN_OUT}); // add token to localStorage 
-                history.push('/signin');                // and redirect to sign in page
+                removeToken();
+                dispatch({type: actionTypes.LOGOUT}); 
+                history.push('/login');
             })
             .catch(err => {
                 dispatch({type: actionTypes.ERROR, message: err.message});

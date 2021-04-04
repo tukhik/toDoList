@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {Card, Button, Container, Row, Col} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faEdit, faStickyNote, faCheck } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faTrash, faEdit, faStickyNote, faCheck } from '@fortawesome/free-solid-svg-icons';
 import {formatDate} from '../../../helpers/utils';
 import EditTaskModal from '../../EditTaskModal';
-import  {getTask, deleteTask, editTask} from '../../../store/actions';
+import {getTask, deleteTask, editTask} from '../../../store/actions';
 import {connect} from 'react-redux';
 
 class SingleTask extends Component{
@@ -18,8 +18,6 @@ class SingleTask extends Component{
     }
 
      componentDidUpdate(prevProps){
-        console.log('prevProps', prevProps);
-        console.log('this.props', this.props);
         if(!prevProps.editTaskSuccess && this.props.editTaskSuccess){
             this.setState({
                 openEditModal: false
@@ -68,12 +66,12 @@ render(){
                 <Card.Text>
                 <b>Created at:</b> {formatDate(task.created_at)}
                 </Card.Text>
-            { task.status === 'done' ?
+                {task.status === 'activ' ?
                   <Button
                         className='m-1'
                         variant="success"
                         onClick={() => editTask({
-                            status: "active",
+                            status: "done",
                             _id: task._id
                         })}
                     >

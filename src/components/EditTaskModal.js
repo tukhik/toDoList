@@ -11,11 +11,17 @@ class EditTaskModal extends Component{
   constructor(props){
     super(props);
     const {date} = props.data;
+    this.titleInputRef = React.createRef();
 
     this.state = {
         ...props.data,
         date: date ? new Date(date) : new Date()
     };
+  }
+
+
+componentDidMount() {
+      this.titleInputRef.current.focus();//when modal open title input was focused
   }
 
     handleChange = (event) => {
@@ -61,10 +67,10 @@ class EditTaskModal extends Component{
         const {title, description} = this.state;
 
         return(
-            <Modal
-            show={true}
-            onHide={onClose}
-            size="lg"
+        <Modal
+          show={true}
+          onHide={onClose}
+          size="lg"
           aria-labelledby="contained-modal-title-vcenter"
           centered
         >
@@ -76,12 +82,13 @@ class EditTaskModal extends Component{
           <Modal.Body>
 
           <FormControl
-              placeholder="Title"
-              onChange={this.handleChange}
+            placeholder="Title"
+            onChange={this.handleChange}
+            ref={this.titleInputRef}
             name='title'
             value={title}
-              onKeyPress={this.handleKeyDown}
-              className='mb-3'
+            onKeyPress={this.handleKeyDown}
+            className='mb-3'
           />
           <FormControl 
           placeholder="Description"

@@ -5,7 +5,7 @@ import styles from './navMenuStyle.module.css';
 import {connect} from 'react-redux';
 import { signout} from './../../store/actions';
 
-function NavMenu({ isAuthenticated }){
+function NavMenu({ isAuthenticated, signout }){
 
     return(
         <Navbar className = {styles.nav}>
@@ -43,6 +43,7 @@ function NavMenu({ isAuthenticated }){
           <NavLink
           to='/login'
           activeClassName={styles.active}
+          className = {styles.navbar}
           exact
           >
           Login
@@ -51,6 +52,7 @@ function NavMenu({ isAuthenticated }){
           <NavLink
           to='/register'
           activeClassName={styles.active}
+          className = {styles.navbar}
           exact
           >
           Register
@@ -70,4 +72,10 @@ return {
 }
 };
 
-export default connect(mapStateToProps)(NavMenu);
+
+const mapDispatchToProps = {
+    signout
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavMenu);
