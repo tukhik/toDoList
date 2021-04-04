@@ -1,13 +1,10 @@
 .footer{
-	padding: 0.3em;
+  padding-top: 5px;
   background: rgb(153, 204, 255);
   text-align: center;
   position: fixed;
   width: 100%;
   bottom: 0;
-  top: 93%;
+  top: 95%;
+  padding-bottom: 5px;
 }
-
-li {
-    list-style-type: none;
-   }

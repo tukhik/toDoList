@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-// import styles from './todo.module.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import Task from '../../Task/Task';
 import NewTask from '../../NewTask/NewTask';
 import Confirm from '../../Confirm';
 import EditTaskModal from '../../EditTaskModal';
 import Search from '../../Search/Search';
-import { connect } from 'react-redux';
-import { getTasks, deleteTask, deleteTasks } from '../../../store/actions';
+import {connect } from 'react-redux';
+import {getTasks, deleteTask, deleteTasks } from '../../../store/actions';
 
 
 class ToDo extends Component {
