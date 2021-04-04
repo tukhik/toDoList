@@ -1,183 +1,158 @@
-    import React, {useState} from 'react';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import styles from './contactStyle.module.css';
+import React, { useState } from 'react';
+import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 
-const requiredErrorMessage = 'Field is required';
-
-
-export default function Contact() {
-const [values, setValues] = useState({
-    name: '',
-    email: '',
-    message: ''
-});
-
-const [errors, setErrors] = useState({
-    name: null,
-    email: null,
-    message: null
-});
-
-
-const handleChange = ({target: {name, value}})=>{
-
-  if(!value){
-    setErrors({
-        ...errors,
-        [name]: requiredErrorMessage
+const Contact = () => {
+    const [ inputValues, setInputValues ] = useState({
+        inputName: '',
+        inputEmail: '',
+        inputText: ''
     });
-  }
-  else {
-    setErrors({
-        ...errors,
-        [name]: null
-    }); 
-  }
 
-  if(name==='email' && value){
-      const emailReg = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-      if(!emailReg.test(value)){
-        setErrors({
-            ...errors,
-            email: 'Invalid email'
-        }); 
-      }
-  }
+    const [ inputsIsValid, setInputsIsValid ] = useState({
+        inputName: null,
+        inputEmail: null,
+        inputText: null
+    });
 
+    const handleChange = ({target: {name, value}}) => {
+        setInputValues({
+            ...inputValues,
+            [name]: value
+        });
+        validator(name, value);
+    };
 
-  setValues({
-        ...values,
-        [name]: value
-  });
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const errorArr = Object.values(inputsIsValid);
+        const errorExist = !errorArr.every(el => el === null);
+        const inputValuesArr = Object.values(inputValues);
+        const inputValuesEmpty = inputValuesArr.every(el => el === '');
 
-};
-
-const    = ()=>{
-    const errorsArr = Object.values(errors);
-    const erorsExist = !errorsArr.every(el => el===null);
-
-    const valuesArr = Object.values(values);
-    const valuesExist = !valuesArr.some(el => el==='');
-
-    if(valuesExist && !erorsExist){
-        
-        fetch('http://localhost:3001/form', {
-            method: 'POST',
-            body: JSON.stringify(values),
-            headers: {
-                "Content-Type": 'application/json'
-            }
-        })
+        if(!errorExist && inputValuesEmpty){
+            setInputsIsValid({
+                inputName: 'field is required',
+                inputEmail: 'field is required',
+                inputText: 'field is required'
+            })
+            return;
+        }
+        if(!errorExist && !inputValuesEmpty){
+            fetch('http://localhost:3001/form', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": 'application/json'
+                },
+                body: JSON.stringify({
+                    name: inputValues.inputName, 
+                    email: inputValues.inputEmail,
+                    message: inputValues.inputText
+                })
+            })
             .then(async (response) => {
-                const res = await response.json();
-
+                const data = await response.json();
                 if(response.status >=400 && response.status < 600){
-                    if(res.error){
-                        throw res.error;
+                    if(data.error){
+                        throw data.error;
                     }
                     else {
                         throw new Error('Something went wrong!');
                     }
                 }
-                
-                console.log('Form sent successfully');
-                setValues({
-                    name: '',
-                    email: '',
-                    message: ''
-                });
+                console.log(response);
+                setInputValues({
+                    inputName: '',
+                    inputEmail: '',
+                    inputText: ''
+                })
 
             })
             .catch((error)=>{
                 console.log('catch error', error);
             });
+        };
+    };
 
-        return;
+    const validator = (name, value) => {
+        if(name === 'inputEmail' && !(new RegExp(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)).test(value)){
+            setInputsIsValid({
+                ...inputsIsValid,
+                [name]: 'Please entet valid email'
+            })
+            return;
+        }
+        if(value.trim() === '') {
+            setInputsIsValid({
+                ...inputsIsValid,
+                [name]: 'is required'
+            })
+            return;
+        }
+        setInputsIsValid({
+            ...inputsIsValid,
+            [name]: null
+        })
+        
     }
-
-    if(!valuesExist && !erorsExist){ 
-            setErrors({
-                name: requiredErrorMessage,
-                email: requiredErrorMessage,
-                message: requiredErrorMessage
-            });
-    }
-
-};
-
-const {sendFormSuccess} = this.props;
-
-useEffect(()=>{
-    if(sendFormSuccess){
-        setValues({
-            name: '',
-            email: '',
-            message: ''
-        });
-    }
-}, [sendFormSuccess]);
 
     return (
-        <Container>
-            <Row className='justify-content-center'>
-                <Col xs={7}>
-                    <Form className='mt-5'>
-                        <h2 className='text-center'>Contact us</h2>
-                        <Form.Group>
-                            <Form.Control
-                            className={errors.name ? styles.invalid: ''}
-                             type="text" 
-                             placeholder="Enter your name"
-                             name="name" 
-                             value={values.name}
-                             onChange={handleChange}
-                             />
+        <Container className="contact">
+            <Row>
+                <Col xs={12}>
+                    <h1>Contact</h1>
+                    <Form>
+                        <Form.Group controlId="formBasicEmail">
+                            <Form.Label>Your name</Form.Label>
+                            <Form.Control 
+                                className="contact-input"
+                                onChange={handleChange}
+                                value={inputValues.inputName}
+                                name="inputName"
+                                type="text"
+                                placeholder="Enter your name"
+                                />
                             <Form.Text className="text-danger">
-                               {errors.name}
+                                {inputsIsValid.inputName}
                             </Form.Text>
                         </Form.Group>
-                        <Form.Group>
+
+                        <Form.Group controlId="formBasicPassword">
+                            <Form.Label>Email</Form.Label>
                             <Form.Control 
-                            className={errors.email ? styles.invalid: ''}
-                            type="email" 
-                            name="email" 
-                            value={values.email}
-                            onChange={handleChange}
-                            placeholder="Enter email" 
-                            />
+                                className="contact-input"
+                                onChange={handleChange}
+                                value={inputValues.inputEmail}
+                                name="inputEmail" 
+                                type="email" 
+                                placeholder="email" 
+                                />
                             <Form.Text className="text-danger">
-                            {errors.email}
-                        </Form.Text>
+                                {inputsIsValid.inputEmail}
+                            </Form.Text>
                         </Form.Group>
-
-                        <Form.Group>
-                        <Form.Control 
-                        as="textarea" 
-                        className={errors.message ? styles.invalid: ''}
-                        placeholder="Enter your message"
-                        rows={5}
-                        name="message" 
-                        value={values.message}
-                        onChange={handleChange}
-                         />
-                        <Form.Text className="text-danger">
-                        {errors.message}
-                    </Form.Text>
-                    </Form.Group>
-                    <div className="text-center">
-                    <Button 
-                    variant="primary"
-                    onClick = {handleSubmit}
-                    className={styles.submitButton}
-                    >
-                    Send
-                </Button>
-                    </div>
-
+                        <Form.Group controlId="formBasicCheckbox">
+                            <Form.Label>Your message</Form.Label>
+                            <Form.Control
+                                className="contact-input"
+                                name="inputText"
+                                as="textarea"
+                                rows={3}
+                                type="text"
+                                placeholder="your message"
+                                value={inputValues.inputText}
+                                onChange={handleChange}
+                                />
+                            <Form.Text className="text-danger">
+                                {inputsIsValid.inputText}
+                            </Form.Text>    
+                        </Form.Group>
+                        <Button variant="primary" type="submit" onClick={handleSubmit}>
+                            Submit
+                        </Button>
                     </Form>
-
                 </Col>
             </Row>
         </Container>
-    );
-};
+    )
+}
+export default Contact;

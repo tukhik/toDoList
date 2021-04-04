@@ -4,11 +4,10 @@ import {NavLink} from 'react-router-dom';
 import styles from './navMenuStyle.module.css';
 import {connect} from 'react-redux';
 
-
-export default function NavMenu({ isAuthenticated }){
+function NavMenu({ isAuthenticated }){
 
     return(
-        <Navbar bg="dark" variant="dark" >
+        <Navbar className = {styles.nav}>
         <Nav className="mr-auto container">
         {isAuthenticated &&
         <NavLink 
