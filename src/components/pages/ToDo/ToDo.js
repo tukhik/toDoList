@@ -6,7 +6,7 @@ import Confirm from '../../Confirm';
 import EditTaskModal from '../../EditTaskModal';
 import Search from '../../Search/Search';
 import {connect } from 'react-redux';
-import {getTasks, deleteTask, deleteTasks } from '../../../store/actions';
+import {getTasks, deleteTask, deleteTasks, getUserInfo } from '../../../store/actions';
 
 
 class ToDo extends Component {
@@ -20,6 +20,7 @@ class ToDo extends Component {
 
     componentDidMount() {
         this.props.getTasks();
+        this.props.getUserInfo();
     }
 
 
@@ -254,7 +255,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
     getTasks,
     deleteTask,
-    deleteTasks
+    deleteTasks,
+    getUserInfo
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ToDo);

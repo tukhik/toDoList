@@ -12,7 +12,7 @@ const defaultState = {
     loading: false,
     successMessage: null,
     errorMessage: null,
-    isAuthenticated: checkLoginStatus()
+    isAuthenticated: checkLoginStatus(),
 };
 
 

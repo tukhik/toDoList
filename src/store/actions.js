@@ -46,6 +46,19 @@ export function getTask(taskId) {
     }
 }
 
+export const getUserInfo = () => {
+    return (dispatch) => {
+        dispatch({type: actionTypes.PENDING});
+        request(`${apiHost}/user`)
+            .then((user) => {
+                dispatch({type: actionTypes.GET_USER, user: `${user.name} ${user.surname}`});
+            })
+            .catch(err => {
+                dispatch({type: actionTypes.ERROR,  error: err.message});
+            })
+    }   
+};
+
 
 export function addTask(newTask) {
     return (dispatch) => {
@@ -182,3 +195,4 @@ export const signout = () => {
             });
     }
 };
+

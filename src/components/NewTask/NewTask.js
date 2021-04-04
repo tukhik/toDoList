@@ -13,6 +13,8 @@ class NewTask extends Component {
         description: '',
         date: new Date()
     };
+
+    
     handleChange = (event) => {
         const {name, value} = event.target;
 

@@ -102,7 +102,6 @@ const Contact = () => {
                     <h1>Contact</h1>
                     <Form>
                         <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Your name</Form.Label>
                             <Form.Control 
                                 className="contact-input"
                                 onChange={handleChange}
@@ -117,7 +116,6 @@ const Contact = () => {
                         </Form.Group>
 
                         <Form.Group controlId="formBasicPassword">
-                            <Form.Label>Email</Form.Label>
                             <Form.Control 
                                 className="contact-input"
                                 onChange={handleChange}
@@ -131,7 +129,6 @@ const Contact = () => {
                             </Form.Text>
                         </Form.Group>
                         <Form.Group controlId="formBasicCheckbox">
-                            <Form.Label>Your message</Form.Label>
                             <Form.Control
                                 className="contact-input"
                                 name="inputText"

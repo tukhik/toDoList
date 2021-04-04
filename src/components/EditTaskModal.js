@@ -20,8 +20,8 @@ class EditTaskModal extends Component{
   }
 
 
-componentDidMount() {
-      this.titleInputRef.current.focus();//when modal open title input was focused
+  componentDidMount() {
+      this.titleInputRef.current.focus();
   }
 
     handleChange = (event) => {
