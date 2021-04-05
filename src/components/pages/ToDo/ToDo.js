@@ -6,7 +6,7 @@ import Confirm from '../../Confirm';
 import EditTaskModal from '../../EditTaskModal';
 import Search from '../../Search/Search';
 import {connect } from 'react-redux';
-import {getTasks, deleteTask, deleteTasks, getUserInfo } from '../../../store/actions';
+import {getTasks, deleteTask, deleteTasks, getUserInfo} from '../../../store/actions';
 
 
 class ToDo extends Component {
@@ -166,6 +166,7 @@ class ToDo extends Component {
 
         return (
             <div>
+            
                 <h2 className = "container">ToDo List</h2>
                 <Container>
                     <Row>
@@ -248,7 +249,8 @@ const mapStateToProps = (state) => {
         tasks: state.tasks,
         addTaskSuccess: state.addTaskSuccess,
         deleteTasksSuccess: state.deleteTasksSuccess,
-        editTasksSuccess: state.editTasksSuccess
+        editTasksSuccess: state.editTasksSuccess,
+       
     };
 };
 
@@ -257,6 +259,7 @@ const mapDispatchToProps = {
     deleteTask,
     deleteTasks,
     getUserInfo
+ 
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ToDo);

@@ -13,6 +13,7 @@ const defaultState = {
     successMessage: null,
     errorMessage: null,
     isAuthenticated: checkLoginStatus(),
+    userInfo: ""
 };
 
 
@@ -36,6 +37,14 @@ export default function reducer(state=defaultState, action){
           ...state,
           loading: false,
           errorMessage: action.error
+        };
+      }
+
+      case actionTypes.GET_USER:{
+        return {
+          ...state,
+          userInfo: action.user,
+          
         };
       }
 

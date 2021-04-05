@@ -10,6 +10,14 @@
 }
 .nav {
 	  background: rgb(27, 83, 110);
+}
+ul {
+	list-style-type: none;
+	color: white;
+	font-family: "Times New Roman", Times, serif;
+	font-size: 1.2em; 
+}
+ul li:hover {
+  color:rgb(204, 0, 0);
 
 }
-

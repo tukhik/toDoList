@@ -1,11 +1,18 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Navbar, Nav, Button} from 'react-bootstrap';
 import {NavLink} from 'react-router-dom';
 import styles from './navMenuStyle.module.css';
 import {connect} from 'react-redux';
-import { signout} from './../../store/actions';
+import { signout, getUserInfo} from './../../store/actions';
 
-function NavMenu({ isAuthenticated, signout }){
+
+
+function NavMenu({ isAuthenticated, signout, userInfo }){
+  useEffect(() => {
+    getUserInfo();
+   
+  });
+
 
     return(
         <Navbar className = {styles.nav}>
@@ -38,7 +45,10 @@ function NavMenu({ isAuthenticated, signout }){
          </NavLink>
                {
           isAuthenticated ? 
-          <Button className="navMenu-link-logout" onClick={signout}>Log out</Button> :
+          <ul>
+          <li>Login: {userInfo}</li>
+          <li><Button className="navMenu-link-logout" onClick={signout}>Log out</Button>
+          </li> </ul>:
           <>
           <NavLink
           to='/login'
@@ -48,7 +58,6 @@ function NavMenu({ isAuthenticated, signout }){
           >
           Login
           </NavLink>
- 
           <NavLink
           to='/register'
           activeClassName={styles.active}
@@ -60,21 +69,22 @@ function NavMenu({ isAuthenticated, signout }){
           </>
          }
 
-
         </Nav>
       </Navbar>
     );
 };
 
 const mapStateToProps = (state)=>{
-return {
-  isAuthenticated: state.isAuthenticated
-}
+  return {
+    isAuthenticated: state.isAuthenticated,
+    userInfo: state.userInfo
+  }
 };
 
 
 const mapDispatchToProps = {
-    signout
+    signout,
+    getUserInfo
 }
 
 
