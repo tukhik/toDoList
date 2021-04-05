@@ -132,7 +132,7 @@ class ToDo extends Component {
 
             })
             .catch((error) => {
-                console.log('catch error', error);
+                throw new Error('Something went wrong!');
             });
     };
 

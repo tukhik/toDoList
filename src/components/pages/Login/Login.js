@@ -27,11 +27,9 @@ function Login(props) {
         if(email && password){
             props.login(values);
         }
-
-    
     };
 
-    const handleChange = ({ target: { name, value } }) => {
+    const handleChange = ({target: { name, value } }) => {
         setValues({
             ...values,
             [name]: value
@@ -41,14 +39,11 @@ function Login(props) {
             ...errors,
             [name]: null
         });
-
     };
-
     return (
 
         <div className={styles.main}>
             <Container>
-
                 <Row className="justify-content-center">
                     <Col xs={12} sm={8} md={6}>
                         <Form>
@@ -92,7 +87,7 @@ function Login(props) {
                                     variant="primary"
                                     onClick={handleSubmit}
                                 >
-                                    Login
+                                Login
                             </Button>
                             </div>
                             <Link to='/register'>Don't have account yet? Register now!</Link>

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import {Form, Button, Container, Row, Col } from 'react-bootstrap';
+import styles from './contactStyle.module.css';
+
 
 const Contact = () => {
     const [ inputValues, setInputValues ] = useState({
@@ -96,10 +98,11 @@ const Contact = () => {
     }
 
     return (
+        <div className={styles.main} >
         <Container className="contact">
-            <Row>
-                <Col xs={12}>
-                    <h1>Contact</h1>
+            <Row className="justify-content-center">
+                <Col xs={12} sm={8} md={6}>
+                    <h1 className={styles.heading}>Contact</h1>
                     <Form>
                         <Form.Group controlId="formBasicEmail">
                             <Form.Control 
@@ -143,13 +146,16 @@ const Contact = () => {
                                 {inputsIsValid.inputText}
                             </Form.Text>    
                         </Form.Group>
-                        <Button variant="primary" type="submit" onClick={handleSubmit}>
+                         <div className="text-center">
+                        <Button variant="primary" onClick={handleSubmit}>
                             Submit
                         </Button>
+                        </div>
                     </Form>
                 </Col>
             </Row>
         </Container>
+        </div>
     )
 }
 export default Contact;

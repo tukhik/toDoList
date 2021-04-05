@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import {Form, Button, Container, Row, Col } from 'react-bootstrap';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 import {register} from '../../../store/actions';
+import styles from './registerStyle.module.css';
 
 
 
@@ -68,13 +70,7 @@ const Register = (props) => {
             notiication = 'Please entet valid email';
         }
         if((name === 'password' || name === 'confirmPassword') && value.trim() !== '') {
-            if(!(/(?=.*[a-z])/).test(value)){
-                notiication = 'password should contain at least one lowercase letter';
-            };
-            if(!(/(?=.*[A-Z])/).test(value)){
-                notiication = 'password should contain at least one uppercase letter';
-            };
-            if(value.length < 8){
+            if(value.length < 6){
                 notiication = 'password should more then 8 charackters';
             };
         }
@@ -88,10 +84,11 @@ const Register = (props) => {
     }
 
     return (
+        <div className={styles.main}>
         <Container className="signin">
-            <Row className="signin-row">
-                <Col lg={6} md={8} xs={12}>
-                    <h1>Log in</h1>
+            <Row className="justify-content-center">
+                <Col xs={12} sm={8} md={6}>
+                    <h3 className={styles.heading}>Register</h3>
                     <Form>
                         <Form.Group controlId="formBasicName">
                             <Form.Control 
@@ -158,13 +155,17 @@ const Register = (props) => {
                                 {inputsIsValid.confirmPassword}
                             </Form.Text>
                         </Form.Group>
-                        <Button variant="primary" type="submit" onClick={handleSubmit}>
+                         <div className="text-center">
+                        <Button variant="primary" onClick={handleSubmit}>
                             Sign in
                         </Button>
+                        </div>
+                        <Link to='/login'>You have account? Login now!</Link>
                     </Form>
                 </Col>
             </Row>
         </Container>
+        </div>
     );
 };
 
