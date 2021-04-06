@@ -9,14 +9,12 @@ import { history } from '../../helpers/history';
 
 
 
-
-
 function NavMenu({ isAuthenticated, signout, userInfo }){
   useEffect(() => {
     getUserInfo();
    
   });
- const removJWT = ()=>{
+ const removeJWT = ()=>{
     removeToken();
     history.push('/login');
   }
@@ -55,9 +53,7 @@ function NavMenu({ isAuthenticated, signout, userInfo }){
           isAuthenticated ? 
           <ul>
           <li>Login: {userInfo}</li>
-          {/*<li><Button className="navMenu-link-logout" onClick={signout}>Log out</Button>
-          </li> */} //use for delete jwt backend 
-          <li><Button className="navMenu-link-logout" onClick={removJWT}>Log out</Button>
+          <li><Button className="navMenu-link-logout" onClick={removeJWT}>Log out</Button>
           </li>
           </ul>:
           <>
