@@ -41,11 +41,11 @@ const Register = (props) => {
 
         if(!errorExist && inputValuesEmpty){
             setInputsIsValid({
-                password: (inputValues.password === '' ? 'field is required' : null),
-                inputEmail: (inputValues.inputEmail === '' ? 'field is required' : null),
-                name: (inputValues.name === '' ? 'field is required' : null),
-                surname: (inputValues.surname === '' ? 'field is required' : null),
-                confirmPassword: (inputValues.confirmPassword === '' ? 'field is required' : null),
+                password: (inputValues.password === '' ? 'Password is required' : null),
+                inputEmail: (inputValues.inputEmail === '' ? 'Email is required' : null),
+                name: (inputValues.name === '' ? 'Name is required' : null),
+                surname: (inputValues.surname === '' ? 'Surname is required' : null),
+                confirmPassword: (inputValues.confirmPassword === '' ? 'confirm password is required' : null),
             })
             return;
         }
@@ -71,11 +71,11 @@ const Register = (props) => {
         }
         if((name === 'password' || name === 'confirmPassword') && value.trim() !== '') {
             if(value.length < 6){
-                notiication = 'password should more then 8 charackters';
+                notiication = 'password should more then 6 charackters';
             };
         }
         if(name === 'confirmPassword' && value !== inputValues.password) {
-            notiication = 'Password dosent match';
+            notiication = "Password doesn't match";
         }
         setInputsIsValid({
             ...inputsIsValid,
