@@ -165,7 +165,6 @@ export function login(data) {
         requestWithoutToken(`${apiHost}/user/sign-in`, 'POST', data)
             .then((res) => {
                 saveToken(res);
-
                 dispatch({ 
                     type: actionTypes.LOGIN_SUCCESS, 
                 });

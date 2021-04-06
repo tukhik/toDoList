@@ -165,14 +165,14 @@ case actionTypes.LOGIN_SUCCESS:{
       }
 
 
-      case actionTypes.LOGOUT:
+  case actionTypes.LOGOUT:
         return {
         ...state,
-          loading: false,
-          isAuthenticated: false
+        loading: false,
+        isAuthenticated: false
       }
    default: return state;
     }
-    }
+  }
     
       

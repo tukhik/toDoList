@@ -3,7 +3,7 @@ import {Navbar, Nav, Button} from 'react-bootstrap';
 import {NavLink} from 'react-router-dom';
 import styles from './navMenuStyle.module.css';
 import {connect} from 'react-redux';
-import { signout, getUserInfo} from './../../store/actions';
+import {signout, getUserInfo} from './../../store/actions';
 
 
 
