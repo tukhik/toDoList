@@ -4,6 +4,10 @@ import {NavLink} from 'react-router-dom';
 import styles from './navMenuStyle.module.css';
 import {connect} from 'react-redux';
 import {signout, getUserInfo} from './../../store/actions';
+import {removeToken} from '../../helpers/auth';
+import { history } from '../../helpers/history';
+
+
 
 
 
@@ -12,6 +16,10 @@ function NavMenu({ isAuthenticated, signout, userInfo }){
     getUserInfo();
    
   });
+ const removJWT = ()=>{
+    removeToken();
+    history.push('/login');
+  }
 
 
     return(
@@ -47,8 +55,11 @@ function NavMenu({ isAuthenticated, signout, userInfo }){
           isAuthenticated ? 
           <ul>
           <li>Login: {userInfo}</li>
-          <li><Button className="navMenu-link-logout" onClick={signout}>Log out</Button>
-          </li> </ul>:
+          {/*<li><Button className="navMenu-link-logout" onClick={signout}>Log out</Button>
+          </li> */} //use for delete jwt backend 
+          <li><Button className="navMenu-link-logout" onClick={removJWT}>Log out</Button>
+          </li>
+          </ul>:
           <>
           <NavLink
           to='/login'
