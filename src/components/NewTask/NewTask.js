@@ -8,11 +8,23 @@ import {connect} from 'react-redux';
 import {addTask} from '../../store/actions';
 
 class NewTask extends Component {
-    state = {
+    
+    constructor(props){
+    super(props);
+    this.titleInputRef = React.createRef();
+
+    this.state = {
         title: '',
         description: '',
         date: new Date()
     };
+
+  }
+
+  componentDidMount() {
+      this.titleInputRef.current.focus();
+  }
+    
     handleChange = (event) => {
         const {name, value} = event.target;
 
@@ -62,8 +74,8 @@ class NewTask extends Component {
             show={true}
             onHide={onClose}
             size="lg"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
         >
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
@@ -75,7 +87,8 @@ class NewTask extends Component {
           <FormControl
               placeholder="Title"
               onChange={this.handleChange}
-            name='title'
+              name='title'
+              ref={this.titleInputRef}
               onKeyPress={this.handleKeyDown}
               className='mb-3'
           />
@@ -85,7 +98,6 @@ class NewTask extends Component {
           rows={5} 
           name='description'
           onChange={this.handleChange}
-
           
           />
           <DatePicker 

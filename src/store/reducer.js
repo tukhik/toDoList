@@ -1,4 +1,6 @@
 import * as actionTypes from './actionTypes';
+import {checkLoginStatus} from '../helpers/auth';
+
 
 const defaultState = { 
     tasks: [],
@@ -10,6 +12,8 @@ const defaultState = {
     loading: false,
     successMessage: null,
     errorMessage: null,
+    isAuthenticated: checkLoginStatus(),
+    userInfo: ""
 };
 
 
@@ -33,6 +37,14 @@ export default function reducer(state=defaultState, action){
           ...state,
           loading: false,
           errorMessage: action.error
+        };
+      }
+
+      case actionTypes.GET_USER:{
+        return {
+          ...state,
+          userInfo: action.user,
+          
         };
       }
 
@@ -98,14 +110,26 @@ export default function reducer(state=defaultState, action){
           successMessage: 'Tasks deleted successfully!!!'
         };
       }
+
       case actionTypes.EDIT_TASK:{
+        let successMessage = 'Task edited successfully!!!';
+
+         if(action.status){
+          if(action.status === 'done'){
+            successMessage = 'Congrats, you have completed the task!!!';
+          }
+          else{
+            successMessage = 'The task is active now!!!';
+          }
+        }
+
         if(action.from === 'single'){
           return {
             ...state,
             task: action.editedTask,
             editTaskSuccess: true,
             loading: false,
-            successMessage: 'Task edited successfully!!!'
+            successMessage: successMessage
           };
 
         }
@@ -119,10 +143,36 @@ export default function reducer(state=defaultState, action){
           tasks,
           editTasksSuccess: true,
           loading: false,
-          successMessage: 'Task edited successfully!!!'
+          successMessage: successMessage
         };
       }
-      default: return state;
+   
+case actionTypes.REGISTER_SUCCESS:{
+        return {
+          ...state,
+          loading: false,
+          successMessage: 'Congrats, you are a new user now!!!'
+        };
+      }
+
+
+case actionTypes.LOGIN_SUCCESS:{
+        return {
+          ...state,
+          loading: false,
+          isAuthenticated: true
+        };
+      }
+
+
+  case actionTypes.LOGOUT:
+        return {
+        ...state,
+        loading: false,
+        isAuthenticated: false
+      }
+   default: return state;
     }
-    }
+  }
     
+      

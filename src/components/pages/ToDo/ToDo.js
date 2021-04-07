@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-// import styles from './todo.module.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import Task from '../../Task/Task';
 import NewTask from '../../NewTask/NewTask';
 import Confirm from '../../Confirm';
 import EditTaskModal from '../../EditTaskModal';
 import Search from '../../Search/Search';
-import { connect } from 'react-redux';
-import { getTasks, deleteTask, deleteTasks } from '../../../store/actions';
+import {connect } from 'react-redux';
+import {getTasks, deleteTask, deleteTasks, getUserInfo} from '../../../store/actions';
 
 
 class ToDo extends Component {
@@ -21,6 +20,7 @@ class ToDo extends Component {
 
     componentDidMount() {
         this.props.getTasks();
+        this.props.getUserInfo();
     }
 
 
@@ -132,7 +132,7 @@ class ToDo extends Component {
 
             })
             .catch((error) => {
-                console.log('catch error', error);
+                throw new Error('Something went wrong!');
             });
     };
 
@@ -149,8 +149,8 @@ class ToDo extends Component {
                     xs={12}
                     sm={6}
                     md={4}
-                    lg={3}
-                    xl={2}
+                    lg={4}
+                    xl={4}
                 >
                     <Task
                         data={task}
@@ -166,6 +166,7 @@ class ToDo extends Component {
 
         return (
             <div>
+            
                 <h2 className = "container">ToDo List</h2>
                 <Container>
                     <Row>
@@ -198,7 +199,7 @@ class ToDo extends Component {
                                 disabled={!selectedTasks.size}
                             >
                                 Delete selected
-                   </Button>
+                            </Button>
                         </Col>
                           <Col>
                             <Button className = "col"
@@ -248,14 +249,17 @@ const mapStateToProps = (state) => {
         tasks: state.tasks,
         addTaskSuccess: state.addTaskSuccess,
         deleteTasksSuccess: state.deleteTasksSuccess,
-        editTasksSuccess: state.editTasksSuccess
+        editTasksSuccess: state.editTasksSuccess,
+       
     };
 };
 
 const mapDispatchToProps = {
     getTasks,
     deleteTask,
-    deleteTasks
+    deleteTasks,
+    getUserInfo
+ 
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ToDo);

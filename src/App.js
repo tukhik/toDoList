@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ToDo from './components/pages/ToDo/ToDo';
 import About from './components/pages/About/About';
@@ -7,12 +6,16 @@ import Contact from './components/pages/Contact/Contact';
 import NotFound from './components/pages/NotFound/NotFound';
 import NavMenu from './components/NavMenu/NavMenu';
 import SingleTask from './components/pages/SingleTask/SingleTask';
+import Register from './components/pages/Register/Register';
+import Footer from './components/Footer/Footer';
+import Login from './components/pages/Login/Login';
 import {Router, Route, Switch, Redirect} from 'react-router-dom';
 import Spinner from './components/Spinner/Spinner';
 import {connect} from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {history} from './helpers/history';
+import AuthRoute from './components/AuthRoute';
 
 const toastProps = {
   position: "bottom-left",
@@ -42,17 +45,32 @@ function App({loading, successMessage, errorMessage}) {
     <Router history={history}>
     <NavMenu />
 
-    <Switch>
-      <Route 
-       path='/'
-       component = {ToDo}
-       exact = {true}
+       <Switch>
+      <AuthRoute 
+      path='/'
+      component = {ToDo}
+      type='private'
+      exact
+    />
+      <AuthRoute 
+       path='/register'
+       component = {Register}
+       type='public'
+       exact
       />
-      <Route 
+      <AuthRoute 
+       path='/login'
+       component = {Login}
+       type='public'
+       exact
+      />
+      <AuthRoute 
       path='/home'
       component = {ToDo}
+      type='private'
       exact = {true}
       />
+
       <Route 
       path='/about'
       component = {About}
@@ -63,9 +81,10 @@ function App({loading, successMessage, errorMessage}) {
       component = {Contact}
       exact
       />
-      <Route 
+      <AuthRoute 
       path='/task/:taskId'
       component = {SingleTask}
+      type='private'
       exact
       />
       <Route 
@@ -79,8 +98,10 @@ function App({loading, successMessage, errorMessage}) {
 
 
     </Router>
-{ loading && <Spinner />}
+{loading && <Spinner />}
 <ToastContainer />
+
+<Footer />
 
     </div>
   );
